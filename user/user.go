@@ -111,8 +111,8 @@ func (am *AuthMenu) Register(newUser User) (bool, error) {
 // 	return true, nil
 // }
 
-func (am *AuthMenu) Tampilkan(nama string, password string) {
-	resultRows, err := am.DB.Query("SELECT * FROM users WHERE nama = ? AND password = ?", nama, password)
+func (am *AuthMenu) Tampilkan() {
+	resultRows, err := am.DB.Query("SELECT * FROM users ")
 	if err != nil {
 		fmt.Println("Ambil Data dari Database Error", err.Error())
 	}
@@ -122,8 +122,8 @@ func (am *AuthMenu) Tampilkan(nama string, password string) {
 		resultRows.Scan(&tmp.ID, &tmp.Nama, &tmp.Password, &tmp.Role)
 		arrUser = append(arrUser, tmp)
 	}
-	id := arrUser[0].Nama
-	namar := arrUser[0].Password
-	fmt.Println(id, namar)
+	// id := arrUser[0].Nama
+	// namar := arrUser[0].Password
+	fmt.Println(arrUser)
 
 }
