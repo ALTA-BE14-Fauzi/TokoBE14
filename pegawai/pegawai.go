@@ -37,7 +37,7 @@ func MenuPegawai(nama string) {
 				fmt.Println(err.Error())
 			}
 			if res {
-				fmt.Println("Sukses Menambahkan Barang")
+				fmt.Println("*** Sukses Menambahkan Barang ***")
 			} else {
 				fmt.Println("Gagal Menambahkan Barang")
 			}
@@ -47,24 +47,42 @@ func MenuPegawai(nama string) {
 			for inputEdit != "0" {
 				fmt.Println("================= Edit =================")
 				itemMenu.TampilkanItem()
-				fmt.Println("1. Edit Barang")
+				fmt.Println("1. Edit Nama Barang")
 				fmt.Println("2. Edit Stok Barang")
 				fmt.Println("0. Kembali ke menu sebelumnya")
-				fmt.Print("Pilih yang akan di edit : ")
+				fmt.Print("Pilih Menu (0-2) : ")
 				fmt.Scanln(&inputEdit)
 				if inputEdit == "1" {
-					var editNama items.Items
+					var namaLama, namaBaru string
 					fmt.Print("Masukan Nama Barang yang akan Di Edit : ")
-					fmt.Scanln(&editNama.Nama)
-					fmt.Print("Ubah Nama Barang ", editNama.Nama, " Menjadi : ")
-					fmt.Scanln(&editNama.Nama)
+					fmt.Scanln(&namaLama)
+					fmt.Print("Ubah Nama Barang ", namaLama, " Menjadi : ")
+					fmt.Scanln(&namaBaru)
+					res, err := itemMenu.UbahNamaItem(namaLama, namaBaru)
+					if err != nil {
+						fmt.Println(err.Error())
+					}
+					if res {
+						fmt.Println("*** Sukses Mengganti Nama Barang ***")
+					} else {
+						fmt.Println("Gagal Mengganti Nama Barang")
+					}
 
 				} else if inputEdit == "2" {
 					var editStock items.Items
-					fmt.Println("Masukan Nama Barang : ")
+					fmt.Print("Masukan Nama Barang : ")
 					fmt.Scanln(&editStock.Nama)
 					fmt.Print("Tambahkan Jumlah Stock Barang : ")
 					fmt.Scanln(&editStock.Stock)
+					res, err := itemMenu.UpdateStock(editStock)
+					if err != nil {
+						fmt.Println(err.Error())
+					}
+					if res {
+						fmt.Println("*** Sukses Menambah Stock Nama Barang ***")
+					} else {
+						fmt.Println("Gagal Menambah Stock Nama Barang")
+					}
 				}
 			}
 			// ==============================================================================================

@@ -57,6 +57,64 @@ func (im *ItemMenu) TambahItem(newItem Items) (bool, error) {
 	return true, nil
 }
 
+func (im *ItemMenu) UbahNamaItem(namaLama string, namaBaru string) (bool, error) {
+	itemQuery, err := im.DB.Prepare("UPDATE items SET nama = ? WHERE nama = ?")
+	if err != nil {
+		log.Println("prepare insert items ", err.Error())
+		return false, errors.New("** Prepare Update ke tabel items ERROR **")
+	}
+	res, err := itemQuery.Exec(namaBaru, namaLama)
+	if err != nil {
+		log.Println("Update Items ", err.Error())
+		return false, errors.New("** Error saat Update Item **")
+	}
+	affRows, err := res.RowsAffected()
+	if err != nil {
+		log.Println("Error setelah update item ", err.Error())
+		return false, errors.New("error setelah update")
+	}
+	if affRows <= 0 {
+		log.Println("no record affected")
+		return false, errors.New("no record")
+	}
+	return true, nil
+}
+func (im *ItemMenu) UpdateStock(editStock Items) (bool, error) {
+	resultRows, err := im.DB.Query("SELECT stock FROM items WHERE nama=? ", editStock.Nama)
+	if err != nil {
+		fmt.Println("Ambil Data dari Database Error", err.Error())
+	}
+	arrItem := []Items{}
+	for resultRows.Next() {
+		tmp := Items{}
+		resultRows.Scan(&tmp.Stock)
+		arrItem = append(arrItem, tmp)
+	}
+	fmt.Println(arrItem[0].Stock)
+	newStock := (arrItem[0].Stock) + editStock.Stock
+
+	itemQuery, err := im.DB.Prepare("UPDATE items SET stock = ? WHERE nama = ?")
+	if err != nil {
+		log.Println("prepare insert items ", err.Error())
+		return false, errors.New("** Prepare Update Stock ke tabel items ERROR **")
+	}
+	res, err := itemQuery.Exec(newStock, editStock.Nama)
+	if err != nil {
+		log.Println("Update Stock Items ", err.Error())
+		return false, errors.New("** Error saat Update Stock Item **")
+	}
+	affRows, err := res.RowsAffected()
+	if err != nil {
+		log.Println("Error setelah update Stock item ", err.Error())
+		return false, errors.New("error setelah update Stock")
+	}
+	if affRows <= 0 {
+		log.Println("no record affected")
+		return false, errors.New("no record")
+	}
+	return true, nil
+}
+
 func (im *ItemMenu) TampilkanItem() {
 	resultRows, err := im.DB.Query("SELECT * FROM items ")
 	if err != nil {
