@@ -3,6 +3,7 @@ package items
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"log"
 )
 
@@ -54,4 +55,31 @@ func (im *ItemMenu) TambahItem(newItem Items) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func (im *ItemMenu) TampilkanItem() {
+	resultRows, err := im.DB.Query("SELECT * FROM items ")
+	if err != nil {
+		fmt.Println("Ambil Data dari Database Error", err.Error())
+	}
+	arrItem := []Items{}
+	for resultRows.Next() {
+		tmp := Items{}
+		resultRows.Scan(&tmp.ID, &tmp.Nama, &tmp.Stock)
+		arrItem = append(arrItem, tmp)
+	}
+	// id := arrItem[0].Nama
+	// namar := arrItem[0].Password
+	fmt.Println("|-----------------------------------------------|")
+	fmt.Println("|  No  |\t Nama\t\t|\tStock   |")
+	fmt.Println("|-----------------------------------------------|")
+	for i := 0; i < len(arrItem); i++ {
+		if len(arrItem[i].Nama) > 5 {
+			fmt.Println("|  ", i+1, " |\t", arrItem[i].Nama, "\t|\t", arrItem[i].Stock, "    |")
+		} else {
+			fmt.Println("|  ", i+1, " |\t", arrItem[i].Nama, "\t\t|\t", arrItem[i].Stock, "    |")
+
+		}
+	}
+	fmt.Println("|-----------------------------------------------|")
 }
