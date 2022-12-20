@@ -88,9 +88,36 @@ func MenuPegawai(nama string) {
 			// ==============================================================================================
 		} else if inputLogin == "3" {
 			fmt.Println("========== Tambahkan Customers =========")
+			var namaCus string
+			fmt.Print("Masukan Nama Customer : ")
+			fmt.Scanln(&namaCus)
+			res, err := itemMenu.RegisterCustomer(namaCus)
+			if err != nil {
+				fmt.Println(err.Error())
+			}
+			if res {
+				fmt.Println("*** Sukses Menambahkan Customer ***")
+			} else {
+				fmt.Println("Gagal Menambahkan Customer")
+			}
 			// ==============================================================================================
 		} else if inputLogin == "4" {
 			fmt.Println("============ Buat Transaksi ============")
+			itemMenu.TampilkanItem()
+			var namaBarang, namaPembeli string
+			fmt.Print("Masukan Nama Barang Yang Akan Dibeli : ")
+			fmt.Scanln(&namaBarang)
+			fmt.Print("Masukan Nama Customer : ")
+			fmt.Scanln(&namaPembeli)
+			res, err := itemMenu.BuatTransaksi(nama, namaBarang, namaPembeli)
+			if err != nil {
+				fmt.Println(err.Error())
+			}
+			if res {
+				fmt.Println("*** Sukses Membuat Transaksi ***")
+			} else {
+				fmt.Println("Gagal Membuat Transaksi")
+			}
 			// ==============================================================================================
 		} else if inputLogin == "5" {
 			fmt.Println("============ Lihat Transaksi ============")
