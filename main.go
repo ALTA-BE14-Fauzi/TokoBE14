@@ -6,15 +6,24 @@ import (
 	"TokoBE14/pegawai"
 	"TokoBE14/user"
 	"fmt"
-	"reflect"
 )
+
+type User struct {
+	ID       int
+	Nama     string
+	Password string
+	Role     int
+}
 
 func main() {
 	cfg := config.ReadConfig()
 	conn := config.ConnectSQL(*cfg)
 	authmenu := user.AuthMenu{DB: conn}
+
+	authmenu.Tampilkan("voldemort", "123")
+	// fmt.Println(reflect.ValueOf(authmenu).Kind())
+
 	var inputHome string
-	fmt.Println(reflect.ValueOf(authmenu).Kind())
 	for inputHome != "0" {
 		// MENU AWAL
 		fmt.Println("============= Welcome to TOKO BE 14 =============")
