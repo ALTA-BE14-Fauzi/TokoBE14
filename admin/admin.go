@@ -2,6 +2,7 @@ package admin
 
 import (
 	"TokoBE14/config"
+	"TokoBE14/transaksi"
 	"TokoBE14/user"
 	"fmt"
 	"strings"
@@ -11,6 +12,7 @@ func MenuAdmin(nama string) {
 	cfg := config.ReadConfig()
 	conn := config.ConnectSQL(*cfg)
 	authmenu := user.AuthMenu{DB: conn}
+	transMenu := transaksi.TransMenu{DB: conn}
 
 	inputLogin := "A"
 	for inputLogin != "0" {
@@ -46,42 +48,73 @@ func MenuAdmin(nama string) {
 				fmt.Println("2. Hapus Items")
 				fmt.Println("3. Hapus Transaksi")
 				fmt.Println("4. Hapus Customers")
+				fmt.Println("0. Batal")
 				fmt.Print("Masukan Pilihan : ")
 				fmt.Scanln(&inputHapus)
 				fmt.Println(inputHapus)
 				if inputHapus == "1" {
 					fmt.Println("============== Hapus Pegawai ==============")
+					var HapusPegawai int
 					fmt.Println("List Pegawai Toko :")
+					authmenu.TampilPegawai()
 					fmt.Println("0. Batal")
-					fmt.Println("1. Syahrini")
 					fmt.Println("Pilih Pegawai yang akan dihapus (0-9) : ")
+					fmt.Scanln(&HapusPegawai)
 
+					if HapusPegawai != 0 {
+						res, err := authmenu.HapusPegawai(HapusPegawai)
+						if err != nil {
+							fmt.Println(err.Error())
+						}
+						if res {
+							fmt.Println("Sukses menghapus pegawai")
+						} else {
+							fmt.Println("Gagal menghapus pegawai")
+						}
+					}
 				}
 				if inputHapus == "2" {
 					fmt.Println("============== Hapus Items ==============")
 					var hapusItem user.Items
 					fmt.Println("List Items :")
-					authmenu.Tampilkan("messi", "messi123")
+					authmenu.TampilItem()
 					fmt.Println("0. Batal")
-					fmt.Println("1. Syahrini")
-					fmt.Print("Pilih Item yang akan dihapus (0-9) : ")
+					fmt.Print("Pilih ID Item yang akan dihapus (0-9) : ")
 					fmt.Scanln(&hapusItem.ID)
-					res, err := authmenu.HapusItem(hapusItem)
-					if err != nil {
-						fmt.Println(err.Error())
+
+					if hapusItem.ID != 0 {
+						res, err := authmenu.HapusItem(hapusItem)
+						if err != nil {
+							fmt.Println(err.Error())
+						}
+						if res {
+							fmt.Println("Sukses menghapus item")
+						} else {
+							fmt.Println("Gagal menghapus item")
+						}
 					}
-					if res {
-						fmt.Println("Sukses menghapus item")
-					} else {
-						fmt.Println("Gagal menghapus item")
-					}
+
 				}
 				if inputHapus == "3" {
 					fmt.Println("============== Hapus Transaksi ==============")
+					var hapusTransaksi int
 					fmt.Println("List Transaksi :")
+					transMenu.TampilHapusTransaksi()
 					fmt.Println("0. Batal")
-					fmt.Println("1. Indomie")
-					fmt.Println("Pilih Pegawai yang akan dihapus (0-9) : ")
+					fmt.Println("Pilih Transaksi yang akan dihapus (0-9) : ")
+					fmt.Scanln(&hapusTransaksi)
+
+					if hapusTransaksi != 0 {
+						res, err := transMenu.HapusTransaksi(hapusTransaksi)
+						if err != nil {
+							fmt.Println(err.Error())
+						}
+						if res {
+							fmt.Println("Sukses menghapus transaksi")
+						} else {
+							fmt.Println("Gagal menghapus transaksi")
+						}
+					}
 				}
 				if inputHapus == "4" {
 					fmt.Println("============== Hapus Customers ==============")
