@@ -130,7 +130,6 @@ func (am *AuthMenu) Tampilkan(nama string, password string) {
 	// id := arrUser[0].Nama
 	// namar := arrUser[0].Password
 	fmt.Println(arrUser)
-
 }
 
 func (am *AuthMenu) HapusItem(hapusItem Items) (bool, error) {

@@ -20,7 +20,7 @@ func main() {
 	conn := config.ConnectSQL(*cfg)
 	authmenu := user.AuthMenu{DB: conn}
 
-	authmenu.Tampilkan("admin", "admin")
+	// authmenu.Tampilkan()
 	// fmt.Println(reflect.ValueOf(authmenu).Kind())
 
 	var inputHome string
