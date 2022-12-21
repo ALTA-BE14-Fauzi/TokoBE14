@@ -3,6 +3,7 @@ package pegawai
 import (
 	"TokoBE14/config"
 	"TokoBE14/items"
+	"TokoBE14/transaksi"
 	"fmt"
 	"strings"
 )
@@ -11,6 +12,7 @@ func MenuPegawai(nama string) {
 	cfg := config.ReadConfig()
 	conn := config.ConnectSQL(*cfg)
 	itemMenu := items.ItemMenu{DB: conn}
+	transMenu := transaksi.TransMenu{DB: conn}
 
 	inputLogin := "A"
 	for inputLogin != "0" {
@@ -120,8 +122,10 @@ func MenuPegawai(nama string) {
 			}
 			// ==============================================================================================
 		} else if inputLogin == "5" {
-			fmt.Println("============ Lihat Transaksi ============")
-
+			transMenu.TampilTransaksiModif()
+			var exitView string
+			fmt.Print("Tulis Apapun Untuk exit : ")
+			fmt.Scanln(&exitView)
 		}
 		if inputLogin > "5" && inputLogin != "0" {
 			fmt.Println("*** Input yang anda masukan tidak cocok.***")
