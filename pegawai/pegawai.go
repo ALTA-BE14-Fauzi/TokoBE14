@@ -109,20 +109,30 @@ func MenuPegawai(nama string) {
 			var namaBarang, namaPembeli string
 			fmt.Print("Masukan Nama Customer : ")
 			fmt.Scanln(&namaPembeli)
-			fmt.Print("Masukan Nama Barang Yang Akan Dibeli : ")
-			fmt.Scanln(&namaBarang)
-			res, err := itemMenu.BuatTransaksi(nama, namaBarang, namaPembeli)
+			res, err := transMenu.BuatTransaksi(nama, namaPembeli)
 			if err != nil {
 				fmt.Println(err.Error())
 			}
 			if res {
-				fmt.Println(" OK ✓")
-				fmt.Println("Input 0 untuk Batal")
+				fmt.Print("Transaksi Dibuat Silahkan Input Nama Barang : ")
+
+				fmt.Scan(&namaBarang)
+				if namaBarang != "0" {
+					res, err := transMenu.BuatTransaksiItems(namaBarang)
+					if err != nil {
+						fmt.Println(err.Error())
+					}
+					if res {
+						fmt.Println(" OK ✓")
+					} else {
+						fmt.Println("Gagal Membuat Transaksi")
+					}
+				}
 				for namaBarang != "0" {
-					fmt.Print("Masukan Nama Barang Selanjutnya : ")
+					fmt.Print("Masukan Nama Barang Selanjutnya (Input 0 Jika Tidak ada) : ")
 					fmt.Scan(&namaBarang)
 					if namaBarang != "0" {
-						res, err := itemMenu.BuatTransaksi(nama, namaBarang, namaPembeli)
+						res, err := transMenu.BuatTransaksiItems(namaBarang)
 						if err != nil {
 							fmt.Println(err.Error())
 						}
@@ -141,9 +151,13 @@ func MenuPegawai(nama string) {
 			// ==============================================================================================
 		} else if inputLogin == "5" {
 			transMenu.TampilTransaksiModif()
-			var exitView string
-			fmt.Print("Tulis Apapun Untuk exit : ")
-			fmt.Scanln(&exitView)
+			var openView int
+			fmt.Print("Pilih ID Transaksi Untuk Lihat Detail : ")
+			fmt.Scanln(&openView)
+			transMenu.ViewTransaksiItem(openView)
+			var ExitView int
+			fmt.Print("Tekan Enter untuk exit ")
+			fmt.Scanln(&ExitView)
 		}
 		if inputLogin > "5" && inputLogin != "0" && inputLogin != "A" {
 			fmt.Println("*** Input yang anda masukan tidak cocok.***")
