@@ -26,9 +26,9 @@ func MenuAdmin(nama string) {
 		if inputLogin == "1" {
 			fmt.Println("========== Tambahkan Pegawai ==========")
 			var newUser user.User
-			// reader := bufio.NewReader(os.Stdin)
 			fmt.Print("Masukkan nama : ")
 			fmt.Scanln(&newUser.Nama)
+			// reader := bufio.NewReader(os.Stdin)
 			// text, _ := reader.ReadString('\n')
 			// text = strings.TrimSuffix(text, "\n")
 			// newUser.Nama = text
