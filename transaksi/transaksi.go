@@ -85,7 +85,31 @@ func (tm *TransMenu) TampilHapusTransaksi() {
 }
 
 func (tm *TransMenu) HapusTransaksi(hapusTransaksi int) (bool, error) {
+	//Delete Transaksi_items
+	delQryId, err := tm.DB.Prepare("DELETE FROM transaksi_items WHERE transaction_id = ?")
+	if err != nil {
+		log.Println("prepare delete transaksi ", err.Error())
+		return false, errors.New("prepare statement delete transaksi error")
+	}
+	// menjalankan query dengan parameter tertentu
+	resId, err := delQryId.Exec(hapusTransaksi)
+	if err != nil {
+		log.Println("delete transaksi", err.Error())
+		return false, errors.New("delete transaksi error")
+	}
+	// Cek berapa baris yang terpengaruh query diatas
+	affRowsId, err := resId.RowsAffected()
 
+	if err != nil {
+		log.Println("after delete transaksi ", err.Error())
+		return false, errors.New("error setelah delete")
+	}
+	if affRowsId <= 0 {
+		log.Println("no record affected")
+		return false, errors.New("no record")
+	}
+
+	//Delete Transaksis
 	delQry, err := tm.DB.Prepare("DELETE FROM transaksis WHERE id = ?")
 	if err != nil {
 		log.Println("prepare delete transaksi ", err.Error())
