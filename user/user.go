@@ -89,33 +89,6 @@ func (am *AuthMenu) Register(newUser User) (bool, error) {
 	return true, nil
 }
 
-// func (am *AuthMenu) HapusPegawai(id int) (bool, error) {
-// 	fmt.Println("DELETE FROM users WHERE id=?")
-// 	registerQry, err := am.DB.Prepare("INSERT INTO users (nama, password,role) values (?,?,?)")
-// 	if err != nil {
-// 		log.Println("prepare insert user ", err.Error())
-// 		return false, errors.New("prepare statement insert user error")
-// 	}
-// 	// menjalankan query dengan parameter tertentu
-// 	res, err := registerQry.Exec(id)
-// 	if err != nil {
-// 		log.Println("insert user ", err.Error())
-// 		return false, errors.New("insert user error")
-// 	}
-// 	// Cek berapa baris yang terpengaruh query diatas
-// 	affRows, err := res.RowsAffected()
-
-// 	if err != nil {
-// 		log.Println("after insert user ", err.Error())
-// 		return false, errors.New("error setelah insert")
-// 	}
-// 	if affRows <= 0 {
-// 		log.Println("no record affected")
-// 		return false, errors.New("no record")
-// 	}
-// 	return true, nil
-// }
-
 func (am *AuthMenu) TampilItem() {
 	resultRows, err := am.DB.Query("SELECT * FROM items")
 	if err != nil {
@@ -152,9 +125,39 @@ func (am *AuthMenu) TampilPegawai() {
 	}
 }
 
-func (am *AuthMenu) HapusPegawai(hapusPegawai int) (bool, error) {
+// -------------------------------------------------------------------------------------------------
+func (am *AuthMenu) CekUser(userID int) bool {
+	res := am.DB.QueryRow("SELECT id FROM users where id = ?", userID)
+	var idExist int
+	err := res.Scan(&idExist)
+	if err != nil { // err hanya bernilai nil & bukan nil
+		log.Println("ID Salah, Harap Masukan ID dengan Benar", err.Error())
+		return true
+	}
+	return false
+}
 
-	if hapusPegawai != 1 {
+func (am *AuthMenu) HapusPegawai(hapusPegawai int) (bool, error) {
+	//--------------------------------Cek ID -----------------------------------
+	if am.CekUser(hapusPegawai) {
+		log.Println("ID tidak terdaftar")
+		return false, errors.New("tolong input id dengan benar")
+	}
+	//--------------------------------Cek Role----------------------------------
+	resultRows, err := am.DB.Query("SELECT role FROM users WHERE id = ?", hapusPegawai)
+	if err != nil {
+		fmt.Println("Ambil Data dari Database Error", err.Error())
+	}
+	arrUser := []User{}
+	for resultRows.Next() {
+		tmp := User{}
+		resultRows.Scan(&tmp.Role)
+		arrUser = append(arrUser, tmp)
+	}
+	role := arrUser[0].Role
+	// fmt.Println(arrUser[0].Role)
+
+	if role == 2 {
 		delQry, err := am.DB.Prepare("DELETE FROM users WHERE id = ?")
 		if err != nil {
 			log.Println("prepare delete pegawai ", err.Error())
@@ -179,7 +182,7 @@ func (am *AuthMenu) HapusPegawai(hapusPegawai int) (bool, error) {
 		}
 		return true, nil
 	} else {
-		return false, errors.New("anda tidak bisa menghapus 1")
+		return false, errors.New("*** silahkan input ID dengan benar sesuai tabel ***")
 	}
 
 }
