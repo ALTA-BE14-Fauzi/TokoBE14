@@ -14,6 +14,11 @@ type User struct {
 	Role     int
 }
 
+type Items struct {
+	ID    int
+	Nama  string
+	Stock int
+}
 type AuthMenu struct {
 	DB *sql.DB
 }
@@ -112,18 +117,45 @@ func (am *AuthMenu) Register(newUser User) (bool, error) {
 // }
 
 func (am *AuthMenu) Tampilkan(nama string, password string) {
-	resultRows, err := am.DB.Query("SELECT * FROM users WHERE nama = ? AND password = ?", nama, password)
+	resultRows, err := am.DB.Query("SELECT * FROM items")
 	if err != nil {
 		fmt.Println("Ambil Data dari Database Error", err.Error())
 	}
-	arrUser := []User{}
+	arrUser := []Items{}
 	for resultRows.Next() {
-		tmp := User{}
-		resultRows.Scan(&tmp.ID, &tmp.Nama, &tmp.Password, &tmp.Role)
+		tmp := Items{}
+		resultRows.Scan(&tmp.ID, &tmp.Nama, &tmp.Stock)
 		arrUser = append(arrUser, tmp)
 	}
-	id := arrUser[0].Nama
-	namar := arrUser[0].Password
-	fmt.Println(id, namar)
+	// id := arrUser[0].Nama
+	// namar := arrUser[0].Password
+	fmt.Println(arrUser)
 
+}
+
+func (am *AuthMenu) HapusItem(hapusItem Items) (bool, error) {
+
+	delQry, err := am.DB.Prepare("DELETE FROM items WHERE id = ?")
+	if err != nil {
+		log.Println("prepare delete item ", err.Error())
+		return false, errors.New("prepare statement delete item error")
+	}
+	// menjalankan query dengan parameter tertentu
+	res, err := delQry.Exec(hapusItem.ID)
+	if err != nil {
+		log.Println("delete item", err.Error())
+		return false, errors.New("delete item error")
+	}
+	// Cek berapa baris yang terpengaruh query diatas
+	affRows, err := res.RowsAffected()
+
+	if err != nil {
+		log.Println("after delete item ", err.Error())
+		return false, errors.New("error setelah delete")
+	}
+	if affRows <= 0 {
+		log.Println("no record affected")
+		return false, errors.New("no record")
+	}
+	return true, nil
 }

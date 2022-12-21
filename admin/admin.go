@@ -59,10 +59,22 @@ func MenuAdmin(nama string) {
 				}
 				if inputHapus == "2" {
 					fmt.Println("============== Hapus Items ==============")
+					var hapusItem user.Items
 					fmt.Println("List Items :")
+					authmenu.Tampilkan("messi", "messi123")
 					fmt.Println("0. Batal")
 					fmt.Println("1. Syahrini")
-					fmt.Println("Pilih Pegawai yang akan dihapus (0-9) : ")
+					fmt.Print("Pilih Item yang akan dihapus (0-9) : ")
+					fmt.Scanln(&hapusItem.ID)
+					res, err := authmenu.HapusItem(hapusItem)
+					if err != nil {
+						fmt.Println(err.Error())
+					}
+					if res {
+						fmt.Println("Sukses menghapus item")
+					} else {
+						fmt.Println("Gagal menghapus item")
+					}
 				}
 				if inputHapus == "3" {
 					fmt.Println("============== Hapus Transaksi ==============")
