@@ -139,7 +139,7 @@ func MenuPegawai(nama string) {
 						if res {
 							fmt.Println(" OK ✓")
 						} else {
-							fmt.Println("Gagal Membuat Transaksi")
+							fmt.Println("Gagal Menginput Barang")
 						}
 					}
 				}
