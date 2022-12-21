@@ -101,7 +101,7 @@ func MenuAdmin(nama string) {
 					fmt.Println("List Transaksi :")
 					transMenu.TampilHapusTransaksi()
 					fmt.Println("0. Batal")
-					fmt.Println("Pilih Transaksi yang akan dihapus (0-9) : ")
+					fmt.Print("Pilih Transaksi yang akan dihapus (0-9) : ")
 					fmt.Scanln(&hapusTransaksi)
 
 					if hapusTransaksi != 0 {
@@ -118,10 +118,25 @@ func MenuAdmin(nama string) {
 				}
 				if inputHapus == "4" {
 					fmt.Println("============== Hapus Customers ==============")
+					var hapusCust int
 					fmt.Println("List Customers :")
+					transMenu.TampilCustomer()
 					fmt.Println("0. Batal")
-					fmt.Println("1. Syahrini")
-					fmt.Println("Pilih Customers yang akan dihapus (0-9) : ")
+
+					fmt.Print("Pilih Customers yang akan dihapus (0-9) : ")
+					fmt.Scanln(&hapusCust)
+
+					if hapusCust != 0 {
+						res, err := transMenu.HapusCustomer(hapusCust)
+						if err != nil {
+							fmt.Println(err.Error())
+						}
+						if res {
+							fmt.Println("Sukses menghapus transaksi")
+						} else {
+							fmt.Println("Gagal menghapus transaksi")
+						}
+					}
 				}
 
 			}

@@ -137,3 +137,53 @@ func (tm *TransMenu) TampilTransaksiModif() {
 	}
 	fmt.Println("|-----------------------------------------------------------------------|")
 }
+
+func (tm *TransMenu) TampilCustomer() {
+	resultRows, err := tm.DB.Query("SELECT * FROM customers ")
+	if err != nil {
+		fmt.Println("Ambil Data dari Database Error", err.Error())
+	}
+	arrCust := []Customer{}
+	for resultRows.Next() {
+		tmp := Customer{}
+		resultRows.Scan(&tmp.ID, &tmp.Nama)
+		arrCust = append(arrCust, tmp)
+	}
+	// id := arrItem[0].Nama
+	// namar := arrItem[0].Password
+	fmt.Println("|-------------------------------|")
+	fmt.Println("|  ID  |\t Nama\t\t|")
+	fmt.Println("|-------------------------------|")
+	for i := 0; i < len(arrCust); i++ {
+		fmt.Println("|  ", arrCust[i].ID, " |\t", arrCust[i].Nama, "\t|")
+	}
+	fmt.Println("|-------------------------------|")
+}
+
+func (tm *TransMenu) HapusCustomer(HapusCustomer int) (bool, error) {
+
+	delQry, err := tm.DB.Prepare("DELETE FROM customers WHERE id = ?")
+	if err != nil {
+		log.Println("prepare delete customer ", err.Error())
+		return false, errors.New("prepare statement delete customer error")
+	}
+	// menjalankan query dengan parameter tertentu
+	res, err := delQry.Exec(HapusCustomer)
+	if err != nil {
+		log.Println("delete customer", err.Error())
+		return false, errors.New("delete customer error")
+	}
+	// Cek berapa baris yang terpengaruh query diatas
+	affRows, err := res.RowsAffected()
+
+	if err != nil {
+		log.Println("after delete customer ", err.Error())
+		return false, errors.New("error setelah delete")
+	}
+	if affRows <= 0 {
+		log.Println("no record affected")
+		return false, errors.New("no record")
+	}
+	return true, nil
+
+}
