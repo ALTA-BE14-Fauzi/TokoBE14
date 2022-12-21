@@ -207,6 +207,13 @@ func (im *ItemMenu) BuatTransaksi(nama string, namaBarang string, namaCustomer s
 		arrUser = append(arrUser, tmp)
 	}
 	userID := arrUser[0].ID
+
+	//----------------------Cek Customer----------------------
+	if im.CekCustomer(namaCustomer) {
+		log.Println("--- Empty Data ---")
+		return false, errors.New("--Customer Belum Terdaftar--")
+	}
+
 	//-----------------------Cari ID Customer--------------------
 	resIDCust, err := im.DB.Query("SELECT id FROM customers WHERE nama =?", namaCustomer)
 	if err != nil {
@@ -225,11 +232,6 @@ func (im *ItemMenu) BuatTransaksi(nama string, namaBarang string, namaCustomer s
 		return false, errors.New("--Barang Tidak Tersedia--")
 	}
 
-	//----------------------Cek Customer----------------------
-	if im.CekCustomer(namaCustomer) {
-		log.Println("--- Empty Data ---")
-		return false, errors.New("--Customer Belum Terdaftar--")
-	}
 	//---------------------Cek Stok & ID----------------------
 	ResStockRows, err := im.DB.Query("SELECT id,stock FROM items WHERE nama =?", namaBarang)
 	if err != nil {
