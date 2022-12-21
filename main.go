@@ -20,6 +20,9 @@ func main() {
 	conn := config.ConnectSQL(*cfg)
 	authmenu := user.AuthMenu{DB: conn}
 
+	// authmenu.Tampilkan()
+	// fmt.Println(reflect.ValueOf(authmenu).Kind())
+
 	var inputHome string
 	for inputHome != "0" {
 		// MENU AWAL
@@ -32,7 +35,7 @@ func main() {
 		if inputHome == "1" {
 			var inputNama, inputPassword string
 			fmt.Println("============= Log In =============")
-			fmt.Print("Masukkan Nama : ")
+			fmt.Print("Masukkan Username : ")
 			fmt.Scanln(&inputNama)
 			fmt.Print("Masukkan Password : ")
 			fmt.Scanln(&inputPassword)
