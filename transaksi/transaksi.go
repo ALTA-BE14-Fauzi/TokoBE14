@@ -404,8 +404,15 @@ func (tm *TransMenu) ViewTransaksiItem(id int) {
 	fmt.Println("| ID\t| Nama Pegawai\t| Nama Customer\t| Nama Barang\t| Qty\t| Tgl Transaksi |")
 	fmt.Println("|-------------------------------------------------------------------------------|")
 	for i := 0; i < len(arrTrans); i++ {
+		if i > 0 {
+			if arrTrans[i].ID == arrTrans[i-1].ID {
+				tmpStr := ""
+				fmt.Println("| ", tmpStr, "\t| ", tmpStr, "\t\t| ", tmpStr, "\t\t| ", arrTrans[i].NamaBarang, "\t| ", arrTrans[i].Quantity, "\t| ", tmpStr, "\t\t|")
+			}
 
-		fmt.Println("| ", arrTrans[i].ID, "\t| ", arrTrans[i].NamaPegawai, "\t| ", arrTrans[i].NamaCustomer, "\t| ", arrTrans[i].NamaBarang, "\t| ", arrTrans[i].Quantity, "\t| ", arrTrans[i].CreateDate, "  |")
+		} else {
+			fmt.Println("| ", arrTrans[i].ID, "\t| ", arrTrans[i].NamaPegawai, "\t| ", arrTrans[i].NamaCustomer, "\t| ", arrTrans[i].NamaBarang, "\t| ", arrTrans[i].Quantity, "\t| ", arrTrans[i].CreateDate, "  |")
+		}
 
 	}
 	fmt.Println("|-------------------------------------------------------------------------------|")
