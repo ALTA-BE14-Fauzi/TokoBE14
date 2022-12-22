@@ -230,6 +230,12 @@ func (im *ItemMenu) TampilkanItemFull() {
 		arrItem = append(arrItem, tmp)
 	}
 
+<<<<<<< HEAD
+=======
+	fmt.Println(resultRows)
+	// id := arrItem[0].Nama
+	// namar := arrItem[0].Password
+>>>>>>> da2651ee635c6bfb87ceaf65706c4596d64783a7
 	fmt.Println("|-----------------------------------------------------------------------|")
 	fmt.Println("|  No  |\t Name\t\t|\tStock   | Diinput Oleh\t\t|")
 	fmt.Println("|-----------------------------------------------------------------------|")
