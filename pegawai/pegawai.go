@@ -151,10 +151,10 @@ func MenuPegawai(nama string) {
 			// ==============================================================================================
 		} else if inputLogin == "5" {
 			transMenu.TampilTransaksiModif()
-			var openView int
+			var inputIDTrans int
 			fmt.Print("Pilih ID Transaksi Untuk Lihat Detail : ")
-			fmt.Scanln(&openView)
-			transMenu.ViewTransaksiItem(openView)
+			fmt.Scanln(&inputIDTrans)
+			transMenu.ViewTransaksiItem(inputIDTrans)
 			var ExitView int
 			fmt.Print("Tekan Enter untuk exit ")
 			fmt.Scanln(&ExitView)
