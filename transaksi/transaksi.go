@@ -440,17 +440,17 @@ func (tm *TransMenu) ViewTransaksiItem(id int) {
 	fmt.Println("|-------------------------------------------------------------------------------|")
 }
 
-//================================================Upgrade Cancel==================================================
+//================================================Upgrade Coding==================================================
 
 func (tm *TransMenu) CekTranItems(id int) bool {
 	res := tm.DB.QueryRow("SELECT transaction_id FROM transaksi_items where transaction_id = ?", id)
 	var idExist int
 	err := res.Scan(&idExist)
 	if err != nil {
-
 		return true
+	} else {
+		return false
 	}
-	return false
 }
 
 func (tm *TransMenu) CekTransaksiItems() (bool, error) {

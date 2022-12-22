@@ -1,6 +1,7 @@
 package items
 
 import (
+	"TokoBE14/user"
 	"database/sql"
 	"errors"
 	"fmt"
@@ -8,9 +9,10 @@ import (
 )
 
 type Items struct {
-	ID    int
-	Nama  string
-	Stock int
+	ID      int
+	Nama    string
+	Stock   int
+	user_id int
 }
 
 type ItemMenu struct {
@@ -32,8 +34,21 @@ func (im *ItemMenu) DuplicateItem(iNama string) bool {
 
 //======================================================================================TAMBAH BARANG
 
-func (im *ItemMenu) TambahItem(newItem Items) (bool, error) {
-	itemQuery, err := im.DB.Prepare("INSERT INTO items(nama,stock) VALUES (?,?)")
+func (im *ItemMenu) TambahItem(nama string, newItem Items) (bool, error) {
+
+	resultRows, err := im.DB.Query("SELECT id FROM users WHERE nama = ?", nama)
+	if err != nil {
+		fmt.Println("Error Reading Data from Database", err.Error())
+	}
+	arrUser := []user.User{}
+	for resultRows.Next() {
+		tmp := user.User{}
+		resultRows.Scan(&tmp.ID)
+		arrUser = append(arrUser, tmp)
+	}
+	userID := arrUser[0].ID
+
+	itemQuery, err := im.DB.Prepare("INSERT INTO items(nama,stock,user_id) VALUES (?,?,?)")
 	if err != nil {
 		log.Println("prepare insert items ", err.Error())
 		return false, errors.New("** Prepare INSERT to items table ERROR **")
@@ -42,7 +57,7 @@ func (im *ItemMenu) TambahItem(newItem Items) (bool, error) {
 		log.Println("--- Duplicated information ---")
 		return false, errors.New("name already exists")
 	}
-	res, err := itemQuery.Exec(newItem.Nama, newItem.Stock)
+	res, err := itemQuery.Exec(newItem.Nama, newItem.Stock, userID)
 	if err != nil {
 		log.Println("Insert Items ", err.Error())
 		return false, errors.New("** Error when inserting Item **")
@@ -176,7 +191,7 @@ func (im *ItemMenu) TampilkanItem() {
 	arrItem := []Items{}
 	for resultRows.Next() {
 		tmp := Items{}
-		resultRows.Scan(&tmp.ID, &tmp.Nama, &tmp.Stock)
+		resultRows.Scan(&tmp.ID, &tmp.Nama, &tmp.Stock, &tmp.user_id)
 		arrItem = append(arrItem, tmp)
 	}
 	// id := arrItem[0].Nama
@@ -193,4 +208,38 @@ func (im *ItemMenu) TampilkanItem() {
 		}
 	}
 	fmt.Println("|-----------------------------------------------|")
+}
+
+type ItemModif struct {
+	ID       int
+	Nama     string
+	Stock    int
+	UserNama string
+}
+
+func (im *ItemMenu) TampilkanItemFull() {
+	resultRows, err := im.DB.Query("SELECT i.id , i.nama,i.stock,u.nama FROM items i JOIN users u ON u.id = i.user_id;")
+	if err != nil {
+		fmt.Println("Read Data from Database Error", err.Error())
+	}
+	arrItem := []ItemModif{}
+	for resultRows.Next() {
+		tmp := ItemModif{}
+		resultRows.Scan(&tmp.ID, &tmp.Nama, &tmp.Stock, &tmp.UserNama)
+		arrItem = append(arrItem, tmp)
+	}
+	// id := arrItem[0].Nama
+	// namar := arrItem[0].Password
+	fmt.Println("|-----------------------------------------------------------------------|")
+	fmt.Println("|  No  |\t Name\t\t|\tStock   | Diinput Oleh\t\t|")
+	fmt.Println("|-----------------------------------------------------------------------|")
+	for i := 0; i < len(arrItem); i++ {
+		if len(arrItem[i].Nama) > 5 {
+			fmt.Println("|  ", i+1, " |\t", arrItem[i].Nama, "\t|\t", arrItem[i].Stock, "\t| ", arrItem[i].UserNama, "\t\t|")
+		} else {
+			fmt.Println("|  ", i+1, " |\t", arrItem[i].Nama, "\t\t|\t", arrItem[i].Stock, "\t| ", arrItem[i].UserNama, "\t\t|")
+
+		}
+	}
+	fmt.Println("|-----------------------------------------------------------------------|")
 }

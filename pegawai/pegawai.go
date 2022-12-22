@@ -23,6 +23,7 @@ func MenuPegawai(nama string) {
 		fmt.Println("  3. Add New Customer")
 		fmt.Println("  4. Add New Transaction")
 		fmt.Println("  5. Show Transactions")
+		fmt.Println("  6. Show Item Table")
 		fmt.Println("  0. Logout")
 		fmt.Print("Enter your option: ")
 		fmt.Scanln(&inputLogin)
@@ -37,7 +38,7 @@ func MenuPegawai(nama string) {
 			fmt.Scanln(&newItem.Stock)
 			itemBaru := newItem.Nama
 			if itemBaru != "" {
-				res, err := itemMenu.TambahItem(newItem)
+				res, err := itemMenu.TambahItem(nama, newItem)
 				if err != nil {
 					fmt.Println(err.Error())
 				}
@@ -187,8 +188,13 @@ func MenuPegawai(nama string) {
 
 			}
 
+		} else if inputLogin == "6" {
+			itemMenu.TampilkanItemFull()
+			var ExitView int
+			fmt.Print("Press enter to exit ")
+			fmt.Scanln(&ExitView)
 		}
-		if inputLogin > "5" && inputLogin != "0" && inputLogin != "A" {
+		if inputLogin > "6" && inputLogin != "0" && inputLogin != "A" {
 			fmt.Println("*** Incorrect input. Please input accordingly***")
 		}
 	}

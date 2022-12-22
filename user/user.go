@@ -15,9 +15,10 @@ type User struct {
 }
 
 type Items struct {
-	ID    int
-	Nama  string
-	Stock int
+	ID     int
+	Nama   string
+	Stock  int
+	userID int
 }
 type AuthMenu struct {
 	DB *sql.DB
@@ -97,7 +98,7 @@ func (am *AuthMenu) TampilItem() {
 	arrItem := []Items{}
 	for resultRows.Next() {
 		tmp := Items{}
-		resultRows.Scan(&tmp.ID, &tmp.Nama, &tmp.Stock)
+		resultRows.Scan(&tmp.ID, &tmp.Nama, &tmp.Stock, &tmp.userID)
 		arrItem = append(arrItem, tmp)
 	}
 	fmt.Println("|-----------------------------------------------|")
@@ -160,7 +161,7 @@ func (am *AuthMenu) HapusPegawai(hapusPegawai int) (bool, error) {
 	//--------------------------------Cek ID -----------------------------------
 	if am.CekUser(hapusPegawai) {
 		log.Println("ID not registered")
-		return false, errors.New("Please input the correct ID")
+		return false, errors.New("-Please input the correct ID-")
 	}
 	//--------------------------------Cek Role----------------------------------
 	resultRows, err := am.DB.Query("SELECT role FROM users WHERE id = ?", hapusPegawai)
