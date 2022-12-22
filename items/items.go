@@ -89,25 +89,25 @@ func (im *ItemMenu) UbahNamaItem(namaLama string, namaBaru string) (bool, error)
 //====================================================================================== TAMBAH STOK
 
 func (im *ItemMenu) UpdateStock(editStock Items) (bool, error) {
-	resultRows, err := im.DB.Query("SELECT stock FROM items WHERE nama=? ", editStock.Nama)
-	if err != nil {
-		fmt.Println("Ambil Data dari Database Error", err.Error())
-	}
-	arrItem := []Items{}
-	for resultRows.Next() {
-		tmp := Items{}
-		resultRows.Scan(&tmp.Stock)
-		arrItem = append(arrItem, tmp)
-	}
-	fmt.Println(arrItem[0].Stock)
-	newStock := (arrItem[0].Stock) + editStock.Stock
+	// resultRows, err := im.DB.Query("SELECT stock FROM items WHERE nama=? ", editStock.Nama)
+	// if err != nil {
+	// 	fmt.Println("Ambil Data dari Database Error", err.Error())
+	// }
+	// arrItem := []Items{}
+	// for resultRows.Next() {
+	// 	tmp := Items{}
+	// 	resultRows.Scan(&tmp.Stock)
+	// 	arrItem = append(arrItem, tmp)
+	// }
+	// fmt.Println(arrItem[0].Stock)
+	// newStock := (arrItem[0].Stock) + editStock.Stock
 
 	itemQuery, err := im.DB.Prepare("UPDATE items SET stock = ? WHERE nama = ?")
 	if err != nil {
 		log.Println("prepare insert items ", err.Error())
 		return false, errors.New("** Prepare Update Stock ke tabel items ERROR **")
 	}
-	res, err := itemQuery.Exec(newStock, editStock.Nama)
+	res, err := itemQuery.Exec(editStock.Stock, editStock.Nama)
 	if err != nil {
 		log.Println("Update Stock Items ", err.Error())
 		return false, errors.New("** Error saat Update Stock Item **")
