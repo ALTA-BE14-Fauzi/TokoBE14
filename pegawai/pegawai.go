@@ -48,7 +48,7 @@ func MenuPegawai(nama string) {
 					fmt.Println("Failed to add product")
 				}
 			} else {
-				fmt.Println("Item Name is not allowed empty, Failed to add product")
+				fmt.Println("Item Name can't be empty, failed to add product")
 			}
 			// ==============================================================================================
 		} else if inputLogin == "2" {
@@ -112,7 +112,7 @@ func MenuPegawai(nama string) {
 					fmt.Println("Failed to add customer")
 				}
 			} else {
-				fmt.Println("Customer Name is not allowed empty, Failed to add customer")
+				fmt.Println("Customer name can't be empty, failed to add customer")
 			}
 			// ==============================================================================================
 		} else if inputLogin == "4" {
@@ -127,9 +127,11 @@ func MenuPegawai(nama string) {
 				fmt.Println(err.Error())
 			}
 			if res {
-				fmt.Println("Transaction with customer name ", namaPembeli, " success create ")
+				fmt.Println("Transaction with customer name ", namaPembeli, " successfully created ")
+				fmt.Println("Press 0 to cancel transaction")
 				for namaBarang != "0" {
-					fmt.Print("Input item Name (0 to cancel) : ")
+					fmt.Print("Input item name: ")
+
 					fmt.Scan(&namaBarang)
 					if namaBarang != "0" {
 						res, err := transMenu.BuatTransaksiItems(namaBarang)
@@ -137,7 +139,7 @@ func MenuPegawai(nama string) {
 							fmt.Println(err.Error())
 						}
 						if res {
-							fmt.Println(" OK ✓")
+							fmt.Println(" OK ✓ | Press 0 to finish transaction/exit")
 						} else {
 							fmt.Println("Failed to input item")
 						}
@@ -154,7 +156,7 @@ func MenuPegawai(nama string) {
 					fmt.Println(err.Error())
 				}
 				if !res {
-					fmt.Println("** Transaksi Dibatalkan **")
+					fmt.Println("** Transaction cancelled **")
 					transMenu.BatalDanHapusTransaksi()
 					namaBarang = "0"
 				}
