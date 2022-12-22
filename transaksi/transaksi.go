@@ -175,13 +175,19 @@ func (tm *TransMenu) TampilCustomer() {
 	}
 	// id := arrItem[0].Nama
 	// namar := arrItem[0].Password
-	fmt.Println("|-------------------------------|")
-	fmt.Println("|  ID  |\t Nama\t\t|")
-	fmt.Println("|-------------------------------|")
+	fmt.Println("|---------------------------------|")
+	fmt.Println("| ID  |\t Nama\t\t\t  |")
+	fmt.Println("|---------------------------------|")
 	for i := 0; i < len(arrCust); i++ {
-		fmt.Println("|  ", arrCust[i].ID, " |\t", arrCust[i].Nama, "\t|")
+		if len(arrCust[i].Nama) > 12 {
+			fmt.Println("| ", arrCust[i].ID, " |\t", arrCust[i].Nama, "\t  |")
+		} else if len(arrCust[i].Nama) < 5 {
+			fmt.Println("| ", arrCust[i].ID, " |\t", arrCust[i].Nama, "\t\t\t  |")
+		} else {
+			fmt.Println("| ", arrCust[i].ID, " |\t", arrCust[i].Nama, "\t\t  |")
+		}
 	}
-	fmt.Println("|-------------------------------|")
+	fmt.Println("|---------------------------------|")
 }
 
 func (tm *TransMenu) HapusCustomer(HapusCustomer int) (bool, error) {

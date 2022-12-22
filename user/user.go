@@ -101,7 +101,7 @@ func (am *AuthMenu) TampilItem() {
 		arrItem = append(arrItem, tmp)
 	}
 	fmt.Println("|-----------------------------------------------|")
-	fmt.Println("|  No  |\t Nama\t\t|\tStock   |")
+	fmt.Println("|  ID  |\t Nama\t\t|\tStock   |")
 	fmt.Println("|-----------------------------------------------|")
 	for i := 0; i < len(arrItem); i++ {
 		if len(arrItem[i].Nama) > 5 {
@@ -132,7 +132,7 @@ func (am *AuthMenu) TampilPegawai() {
 	fmt.Println("|-------------------------------|")
 	for i := 0; i < len(arrUser); i++ {
 		if arrUser[i].Role > 1 {
-			if len(arrUser[i].Nama) < 9 {
+			if len(arrUser[i].Nama) <= 12 {
 				fmt.Println("| ", arrUser[i].ID, "\t| ", arrUser[i].Nama, "\t\t| ")
 			} else {
 				fmt.Println("| ", arrUser[i].ID, "\t| ", arrUser[i].Nama, "\t| ")
