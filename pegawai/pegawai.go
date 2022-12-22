@@ -51,7 +51,7 @@ func MenuPegawai(nama string) {
 				fmt.Println("=================== Edit Item ===================")
 				itemMenu.TampilkanItem()
 				fmt.Println("1. Edit Item's Name")
-				fmt.Println("2. Add Item's Stock")
+				fmt.Println("2. Update Item's Stock")
 				fmt.Println("0. Back to previous menu")
 				fmt.Print("Input menu (0-2) : ")
 				fmt.Scanln(&inputEdit)
@@ -76,16 +76,16 @@ func MenuPegawai(nama string) {
 					var editStock items.Items
 					fmt.Print("Input item's name : ")
 					fmt.Scanln(&editStock.Nama)
-					fmt.Print("Add item's stock : ")
+					fmt.Print("Update item's stock : ")
 					fmt.Scanln(&editStock.Stock)
 					res, err := itemMenu.UpdateStock(editStock)
 					if err != nil {
 						fmt.Println(err.Error())
 					}
 					if res {
-						fmt.Println("*** Successfully added item's stock ***")
+						fmt.Println("*** Successfully updated item's stock ***")
 					} else {
-						fmt.Println("Failed to add item's stock")
+						fmt.Println("Failed to update item's stock")
 					}
 				}
 			}
