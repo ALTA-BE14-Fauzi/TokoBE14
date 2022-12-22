@@ -143,7 +143,7 @@ func MenuPegawai(nama string) {
 						}
 					}
 				}
-				inputLogin = "A"
+
 			} else {
 				fmt.Println("Gagal Membuat Transaksi")
 			}
@@ -171,6 +171,7 @@ func MenuPegawai(nama string) {
 			}
 
 		}
+		inputLogin = "A"
 		if inputLogin > "5" && inputLogin != "0" && inputLogin != "A" {
 			fmt.Println("*** Input yang anda masukan tidak cocok.***")
 		}
