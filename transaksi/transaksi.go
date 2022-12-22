@@ -48,11 +48,11 @@ func (tm *TransMenu) TampilTransaksi() {
 	fmt.Println("|------------------------------------------------------|")
 	fmt.Println("|                     TRANSAKSI                        |")
 	fmt.Println("|------------------------------------------------------|")
-	fmt.Println("|  No  | Nama Pegawai\t| Nama Customer\t| Tgl Pembelian |")
+	fmt.Println("| No\t| Nama Pegawai\t| Nama Customer\t| Tgl Pembelian |")
 	fmt.Println("|------------------------------------------------------|")
 	for i := 0; i < len(arrTrans); i++ {
 
-		fmt.Println("|  ", i+1, " | ", arrTrans[i].User_ID, "\t\t| ", arrTrans[i].Customer_ID, "\t\t|", arrTrans[i].Create_Date, "\t|")
+		fmt.Println("| ", i+1, "\t| ", arrTrans[i].User_ID, "\t\t| ", arrTrans[i].Customer_ID, "\t\t|", arrTrans[i].Create_Date, "\t|")
 
 	}
 	fmt.Println("|------------------------------------------------------|")
@@ -74,11 +74,11 @@ func (tm *TransMenu) TampilHapusTransaksi() {
 	fmt.Println("|-------------------------------------------------------|")
 	fmt.Println("|                     TABEL TRANSAKSI                   |")
 	fmt.Println("|-------------------------------------------------------|")
-	fmt.Println("|  ID  | Nama Pegawai\t| Nama Customer\t| Tgl Pembelian |")
+	fmt.Println("| ID\t| Nama Pegawai\t| Nama Customer\t| Tgl Pembelian |")
 	fmt.Println("|-------------------------------------------------------|")
 	for i := 0; i < len(arrTrans); i++ {
 
-		fmt.Println("|  ", arrTrans[i].ID, " | ", arrTrans[i].NamaKasir, "\t| ", arrTrans[i].NamaCustomer, "\t|", arrTrans[i].CreateDate, "\t|")
+		fmt.Println("| ", arrTrans[i].ID, "\t| ", arrTrans[i].NamaKasir, "\t| ", arrTrans[i].NamaCustomer, "\t|", arrTrans[i].CreateDate, "\t|")
 
 	}
 	fmt.Println("|-------------------------------------------------------|")

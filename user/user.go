@@ -102,13 +102,13 @@ func (am *AuthMenu) TampilItem() {
 		arrItem = append(arrItem, tmp)
 	}
 	fmt.Println("|-----------------------------------------------|")
-	fmt.Println("|  ID  |\t Name\t\t|\tStock   |")
+	fmt.Println("| ID\t|\t Name\t\t|\tStock   |")
 	fmt.Println("|-----------------------------------------------|")
 	for i := 0; i < len(arrItem); i++ {
 		if len(arrItem[i].Nama) > 5 {
-			fmt.Println("|  ", arrItem[i].ID, " |\t", arrItem[i].Nama, "\t|\t", arrItem[i].Stock, "\t|")
+			fmt.Println("| ", arrItem[i].ID, "\t|\t", arrItem[i].Nama, "\t|\t", arrItem[i].Stock, "\t|")
 		} else {
-			fmt.Println("|  ", arrItem[i].ID, " |\t", arrItem[i].Nama, "\t\t|\t", arrItem[i].Stock, "\t|")
+			fmt.Println("| ", arrItem[i].ID, "\t|\t", arrItem[i].Nama, "\t\t|\t", arrItem[i].Stock, "\t|")
 
 		}
 	}
