@@ -156,7 +156,7 @@ func MenuPegawai(nama string) {
 		} else if inputLogin == "5" {
 			transMenu.TampilTransaksiModif()
 			var inputIDTrans int
-			fmt.Print("0. Cancel or Exit View")
+			fmt.Println("0. Cancel or Exit View")
 			fmt.Print("Choose transaction ID to see more: ")
 			fmt.Scanln(&inputIDTrans)
 			if inputIDTrans != 0 {

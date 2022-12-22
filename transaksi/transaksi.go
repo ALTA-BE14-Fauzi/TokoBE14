@@ -45,14 +45,14 @@ func (tm *TransMenu) TampilTransaksi() {
 	}
 	// id := arrTrans[0].Nama
 	// namar := arrTrans[0].Password
-	fmt.Println("|------------------------------------------------------|")
-	fmt.Println("|                     TRANSACTION                      |")
-	fmt.Println("|------------------------------------------------------|")
-	fmt.Println("| No | Employee Name\t| Customer Name\t| Purchase Date |")
-	fmt.Println("|------------------------------------------------------|")
+	fmt.Println("|----------------------------------------------------------|")
+	fmt.Println("|                     TRANSACTION                          |")
+	fmt.Println("|----------------------------------------------------------|")
+	fmt.Println("| No   | Employee Name\t| Customer Name\t| Purchase Date |")
+	fmt.Println("|--------------------------------------------------------|")
 	for i := 0; i < len(arrTrans); i++ {
 
-		fmt.Println("|  ", i+1, " | ", arrTrans[i].User_ID, "\t\t| ", arrTrans[i].Customer_ID, "\t\t|", arrTrans[i].Create_Date, "\t|")
+		fmt.Println("|  ", i+1, " | ", arrTrans[i].User_ID, "\t| ", arrTrans[i].Customer_ID, "\t\t|", arrTrans[i].Create_Date, "\t|")
 
 	}
 	fmt.Println("|------------------------------------------------------|")
@@ -71,11 +71,11 @@ func (tm *TransMenu) TampilHapusTransaksi() {
 	}
 	// id := arrTrans[0].Nama
 	// namar := arrTrans[0].Password
-	fmt.Println("|------------------------------------------------------|")
-	fmt.Println("|                     TRANSACTION                      |")
-	fmt.Println("|------------------------------------------------------|")
+	fmt.Println("|--------------------------------------------------------|")
+	fmt.Println("|                       TRANSACTION                      |")
+	fmt.Println("|--------------------------------------------------------|")
 	fmt.Println("| No | Employee Name\t| Customer Name\t| Purchase Date |")
-	fmt.Println("|------------------------------------------------------|")
+	fmt.Println("|--------------------------------------------------------|")
 	for i := 0; i < len(arrTrans); i++ {
 
 		fmt.Println("|  ", arrTrans[i].ID, " | ", arrTrans[i].NamaKasir, "\t| ", arrTrans[i].NamaCustomer, "\t|", arrTrans[i].CreateDate, "\t|")
@@ -149,14 +149,14 @@ func (tm *TransMenu) TampilTransaksiModif() {
 	}
 	// id := arrTrans[0].Nama
 	// namar := arrTrans[0].Password
-	fmt.Println("|------------------------------------------------------|")
-	fmt.Println("|                     TRANSACTION                      |")
-	fmt.Println("|------------------------------------------------------|")
+	fmt.Println("|-------------------------------------------------------|")
+	fmt.Println("|                     TRANSACTION                       |")
+	fmt.Println("|-------------------------------------------------------|")
 	fmt.Println("| No | Employee Name\t| Customer Name\t| Purchase Date |")
-	fmt.Println("|------------------------------------------------------|")
+	fmt.Println("|-------------------------------------------------------|")
 	for i := 0; i < len(arrTrans); i++ {
 
-		fmt.Println("| ", arrTrans[i].ID, "\t| ", arrTrans[i].NamaKasir, "\t| ", arrTrans[i].NamaCustomer, "\t|", arrTrans[i].CreateDate, "\t|")
+		fmt.Println("| ", arrTrans[i].ID, "| ", arrTrans[i].NamaKasir, "\t\t| ", arrTrans[i].NamaCustomer, "\t|", arrTrans[i].CreateDate, "\t|")
 
 	}
 	fmt.Println("|-------------------------------------------------------|")
@@ -397,7 +397,7 @@ func (tm *TransMenu) CekTransaksiID(id int) bool {
 	var idExist int
 	err := res.Scan(&idExist)
 	if err != nil { // err hanya bernilai nil & bukan nil
-		log.Println("ID Transaction doesn't exist", err.Error())
+		log.Println("Transaction ID doesn't exist", err.Error())
 		return true
 	}
 	return false
@@ -405,7 +405,7 @@ func (tm *TransMenu) CekTransaksiID(id int) bool {
 
 func (tm *TransMenu) TranksaksiItem(id int) (bool, error) {
 	if tm.CekTransaksiID(id) {
-		log.Println("--- ID Transaksi doesn't exist  ---")
+		log.Println("--- Transaction ID doesn't exist  ---")
 		return false, errors.New("ID empty")
 	}
 	return true, nil
@@ -423,11 +423,11 @@ func (tm *TransMenu) ViewTransaksiItem(id int) {
 		arrTrans = append(arrTrans, tmp)
 	}
 	// fmt.Println(arrTrans)
-	fmt.Println("|-------------------------------------------------------------------------------|")
-	fmt.Println("|                               ITEM TRANSACTION TABLE                            |")
-	fmt.Println("|-------------------------------------------------------------------------------|")
-	fmt.Println("| ID\t| Employee Name\t| Customer Name \t| Item Name\t| Qty\t| Transaction Date |")
-	fmt.Println("|-------------------------------------------------------------------------------|")
+	fmt.Println("|----------------------------------------------------------------------------------|")
+	fmt.Println("|                               ITEM TRANSACTION TABLE                             |")
+	fmt.Println("|----------------------------------------------------------------------------------|")
+	fmt.Println("| ID\t| Employee Name\t| Customer Name | Item Name     | Qty   | Transaction Date |")
+	fmt.Println("|----------------------------------------------------------------------------------|")
 	for i := 0; i < len(arrTrans); i++ {
 		if i > 0 {
 			if arrTrans[i].ID == arrTrans[i-1].ID {
@@ -436,9 +436,9 @@ func (tm *TransMenu) ViewTransaksiItem(id int) {
 			}
 
 		} else {
-			fmt.Println("| ", arrTrans[i].ID, "\t| ", arrTrans[i].NamaPegawai, "\t| ", arrTrans[i].NamaCustomer, "\t| ", arrTrans[i].NamaBarang, "\t| ", arrTrans[i].Quantity, "\t| ", arrTrans[i].CreateDate, "  |")
+			fmt.Println("| ", arrTrans[i].ID, "\t| ", arrTrans[i].NamaPegawai, "\t| ", arrTrans[i].NamaCustomer, "\t| ", arrTrans[i].NamaBarang, "\t| ", arrTrans[i].Quantity, "\t| ", arrTrans[i].CreateDate, "     |")
 		}
 
 	}
-	fmt.Println("|-------------------------------------------------------------------------------|")
+	fmt.Println("|----------------------------------------------------------------------------------|")
 }
