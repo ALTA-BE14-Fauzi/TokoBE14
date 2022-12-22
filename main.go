@@ -8,13 +8,6 @@ import (
 	"fmt"
 )
 
-type User struct {
-	ID       int
-	Nama     string
-	Password string
-	Role     int
-}
-
 func main() {
 	cfg := config.ReadConfig()
 	conn := config.ConnectSQL(*cfg)
