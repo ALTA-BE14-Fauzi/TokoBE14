@@ -230,13 +230,13 @@ func (im *ItemMenu) TampilkanItemFull() {
 	}
 
 	fmt.Println("|-----------------------------------------------------------------------|")
-	fmt.Println("|  No  |\t Name\t\t|\tStock   | Diinput Oleh\t\t|")
+	fmt.Println("| No\t|\t Name\t\t|\tStock   | Diinput Oleh\t\t|")
 	fmt.Println("|-----------------------------------------------------------------------|")
 	for i := 0; i < len(arrItem); i++ {
 		if len(arrItem[i].Nama) > 5 {
-			fmt.Println("|  ", i+1, " |\t", arrItem[i].Nama, "\t|\t", arrItem[i].Stock, "\t| ", arrItem[i].UserNama, "\t\t|")
+			fmt.Println("| ", i+1, "\t|\t", arrItem[i].Nama, "\t|\t", arrItem[i].Stock, "\t| ", arrItem[i].UserNama, "\t\t|")
 		} else {
-			fmt.Println("|  ", i+1, " |\t", arrItem[i].Nama, "\t\t|\t", arrItem[i].Stock, "\t| ", arrItem[i].UserNama, "\t\t|")
+			fmt.Println("| ", i+1, "\t|\t", arrItem[i].Nama, "\t\t|\t", arrItem[i].Stock, "\t| ", arrItem[i].UserNama, "\t\t|")
 
 		}
 	}

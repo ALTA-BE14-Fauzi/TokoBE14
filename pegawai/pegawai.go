@@ -142,6 +142,7 @@ func MenuPegawai(nama string) {
 								fmt.Println(" OK ✓ | Press 0 to finish transaction/exit")
 							} else {
 								fmt.Println("Failed to input item")
+								fmt.Println("Press 0 to finish transaction/exit")
 							}
 						}
 
@@ -163,6 +164,8 @@ func MenuPegawai(nama string) {
 
 				}
 				inputLogin = "A"
+			} else {
+				fmt.Println("Customer name can't be empty. Transaction failed.")
 			}
 		} else if inputLogin == "5" {
 			transMenu.TampilTransaksiModif()

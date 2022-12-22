@@ -16,7 +16,7 @@ func MenuAdmin(nama string) {
 
 	inputLogin := "A"
 	for inputLogin != "0" {
-		fmt.Println("=================== Admin Menu =====================") // MENU ADMIN-------------
+		fmt.Println("================= Admin  Menu ===================") // MENU ADMIN-------------
 		fmt.Println("Welcome ", strings.ToUpper(nama))
 		fmt.Println("1. Add New Employee")
 		fmt.Println("2. Delete Data")
