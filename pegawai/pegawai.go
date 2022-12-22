@@ -127,36 +127,35 @@ func MenuPegawai(nama string) {
 				}
 				if res {
 					fmt.Println("Transaction with customer name ", namaPembeli, " success create ")
+					for namaBarang != "0" {
+						fmt.Print("Input item Name (0 to cancel) : ")
+						fmt.Scan(&namaBarang)
+						if namaBarang != "0" {
+							res, err := transMenu.BuatTransaksiItems(namaBarang)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
+							if res {
+								fmt.Println(" OK ✓")
+							} else {
+								fmt.Println("Failed to input item")
+							}
+						}
 
+					}
 				} else {
 					fmt.Println("Failed to create transaction")
 				}
-				for namaBarang != "0" {
-					fmt.Print("Input item Name (0 to cancel) : ")
-					fmt.Scan(&namaBarang)
-					if namaBarang != "0" {
-						res, err := transMenu.BuatTransaksiItems(namaBarang)
-						if err != nil {
-							fmt.Println(err.Error())
-						}
-						if res {
-							fmt.Println(" OK ✓")
-						} else {
-							fmt.Println("Failed to input item")
-						}
+				// ----------------CEK APAKAH ADA TRANSAKSI TAPI TIDAK ADA BARANG YANG DIBELI-----------
+				if namaBarang == "0" {
+					res, err := transMenu.CekTransaksiItems()
+					if err != nil {
+						fmt.Println(err.Error())
 					}
-					// ----------------CEK APAKAH ADA TRANSAKSI TAPI TIDAK ADA BARANG YANG DIBELI-----------
-					if namaBarang == "0" {
-						res, err := transMenu.CekTransaksiItems()
-						if err != nil {
-							fmt.Println(err.Error())
-						}
-						if !res {
-							fmt.Println("** Transaksi Dibatalkan **")
-							transMenu.BatalDanHapusTransaksi()
-							namaBarang = "0"
-						}
-
+					if !res {
+						fmt.Println("** Transaksi Dibatalkan **")
+						transMenu.BatalDanHapusTransaksi()
+						namaBarang = "0"
 					}
 
 				}
@@ -169,7 +168,7 @@ func MenuPegawai(nama string) {
 			transMenu.TampilTransaksiModif()
 			var inputIDTrans int
 			fmt.Println("0. Cancel or Exit View")
-			fmt.Print("Choose transaction ID to see more: ")
+			fmt.Print("Select and input transaction ID to see more: ")
 			fmt.Scanln(&inputIDTrans)
 			if inputIDTrans != 0 {
 				res, err := transMenu.TranksaksiItem(inputIDTrans)
