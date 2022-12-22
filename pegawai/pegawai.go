@@ -17,7 +17,7 @@ func MenuPegawai(nama string) {
 	inputLogin := "A"
 	for inputLogin != "0" {
 		fmt.Println("================== PEGAWAI ====================") // MENU PEGAWAI------------
-		fmt.Println("Selamat Datang ", strings.ToUpper(nama))
+		fmt.Println("Welcome", strings.ToUpper(nama))
 		fmt.Println("1. Tambahkan Barang Baru")
 		fmt.Println("2. Edit Nama Barang & Stok")
 		fmt.Println("3. Tambahkan Customer baru")
@@ -147,6 +147,8 @@ func MenuPegawai(nama string) {
 			} else {
 				fmt.Println("Gagal Membuat Transaksi")
 			}
+			//cek ID transaksi sudah input barang atau belum
+			//
 
 			// ==============================================================================================
 		} else if inputLogin == "5" {

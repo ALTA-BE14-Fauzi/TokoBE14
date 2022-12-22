@@ -23,18 +23,22 @@ func main() {
 	var inputHome string
 	for inputHome != "0" {
 		// MENU AWAL
-		fmt.Println("============= Welcome to TOKO BE 14 =============")
-		fmt.Println("1. Login")
+		fmt.Println("============= WELCOME TO TOKO BE 14 =============")
+		fmt.Println("")
+		fmt.Println("\t\t   Select Menu")
+		fmt.Print("\t\t1. Login   ")
 		fmt.Println("0. Exit")
-		fmt.Print("Masukan Pilihan : ")
+		fmt.Println("")
+		fmt.Print("Enter your menu: ")
 		fmt.Scanln(&inputHome)
+		fmt.Println("")
 		// fmt.Println(string(inputHome))
 		if inputHome == "1" {
 			var inputNama, inputPassword string
-			fmt.Println("============= Log In =============")
-			fmt.Print("Masukkan Username : ")
+			fmt.Println("-------------------| Log  In |-------------------")
+			fmt.Print("Enter username : ")
 			fmt.Scanln(&inputNama)
-			fmt.Print("Masukkan Password : ")
+			fmt.Print("Enter Password : ")
 			fmt.Scanln(&inputPassword)
 			res, err := authmenu.Login(inputNama, inputPassword)
 			if err != nil {
@@ -48,7 +52,7 @@ func main() {
 				pegawai.MenuPegawai(res.Nama)
 			}
 		} else if inputHome != "0" {
-			fmt.Println("Anda Hanya dapat Menginput 1. Login dan 0. Exit")
+			fmt.Println("Please input 1 for Login and 0 to Exit")
 		}
 	}
 }
