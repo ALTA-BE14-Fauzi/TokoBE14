@@ -24,7 +24,7 @@ func (im *ItemMenu) DuplicateItem(iNama string) bool {
 	var idExist int
 	err := res.Scan(&idExist)
 	if err != nil { // err hanya bernilai nil & bukan nil
-		log.Println("Product Baru Berhasil Dibuat", err.Error())
+		log.Println("New item has been made", err.Error())
 		return false
 	}
 	return true
@@ -36,22 +36,22 @@ func (im *ItemMenu) TambahItem(newItem Items) (bool, error) {
 	itemQuery, err := im.DB.Prepare("INSERT INTO items(nama,stock) VALUES (?,?)")
 	if err != nil {
 		log.Println("prepare insert items ", err.Error())
-		return false, errors.New("** Prepare INSERT ke tabel items ERROR **")
+		return false, errors.New("** Prepare INSERT to items table ERROR **")
 	}
 	if im.DuplicateItem(newItem.Nama) {
 		log.Println("--- Duplicated information ---")
-		return false, errors.New("nama sudah digunakan")
+		return false, errors.New("name already exists")
 	}
 	res, err := itemQuery.Exec(newItem.Nama, newItem.Stock)
 	if err != nil {
 		log.Println("Insert Items ", err.Error())
-		return false, errors.New("** Error saat Insert Item **")
+		return false, errors.New("** Error when inserting Item **")
 	}
 	affRows, err := res.RowsAffected()
 
 	if err != nil {
-		log.Println("Error setelah insert item ", err.Error())
-		return false, errors.New("error setelah insert")
+		log.Println("Error after inserting item ", err.Error())
+		return false, errors.New("error after insert")
 	}
 	if affRows <= 0 {
 		log.Println("no record affected")
@@ -67,17 +67,17 @@ func (im *ItemMenu) UbahNamaItem(namaLama string, namaBaru string) (bool, error)
 	itemQuery, err := im.DB.Prepare("UPDATE items SET nama = ? WHERE nama = ?")
 	if err != nil {
 		log.Println("prepare insert items ", err.Error())
-		return false, errors.New("** Prepare Update ke tabel items ERROR **")
+		return false, errors.New("** Prepare Update to item's table ERROR **")
 	}
 	res, err := itemQuery.Exec(namaBaru, namaLama)
 	if err != nil {
 		log.Println("Update Items ", err.Error())
-		return false, errors.New("** Error saat Update Item **")
+		return false, errors.New("** Error while Updating Item **")
 	}
 	affRows, err := res.RowsAffected()
 	if err != nil {
-		log.Println("Error setelah update item ", err.Error())
-		return false, errors.New("error setelah update")
+		log.Println("Error after update item ", err.Error())
+		return false, errors.New("error after update")
 	}
 	if affRows <= 0 {
 		log.Println("no record affected")
@@ -105,17 +105,17 @@ func (im *ItemMenu) UpdateStock(editStock Items) (bool, error) {
 	itemQuery, err := im.DB.Prepare("UPDATE items SET stock = ? WHERE nama = ?")
 	if err != nil {
 		log.Println("prepare insert items ", err.Error())
-		return false, errors.New("** Prepare Update Stock ke tabel items ERROR **")
+		return false, errors.New("** Prepare Update Stock to items table ERROR **")
 	}
 	res, err := itemQuery.Exec(editStock.Stock, editStock.Nama)
 	if err != nil {
 		log.Println("Update Stock Items ", err.Error())
-		return false, errors.New("** Error saat Update Stock Item **")
+		return false, errors.New("** Error while Updating Stock Item **")
 	}
 	affRows, err := res.RowsAffected()
 	if err != nil {
-		log.Println("Error setelah update Stock item ", err.Error())
-		return false, errors.New("error setelah update Stock")
+		log.Println("Error after updating Stock item ", err.Error())
+		return false, errors.New("error after updating Stock")
 	}
 	if affRows <= 0 {
 		log.Println("no record affected")
@@ -131,7 +131,7 @@ func (im *ItemMenu) DuplicateCustomer(cNama string) bool {
 	var idExist int
 	err := res.Scan(&idExist)
 	if err != nil { // err hanya bernilai nil & bukan nil
-		log.Println("Pelanggan/Customer Baru Berhasil Didaftarkan", err.Error())
+		log.Println("New customer has been successfully registered", err.Error())
 		return false
 	}
 	return true
@@ -141,22 +141,22 @@ func (im *ItemMenu) RegisterCustomer(nama string) (bool, error) {
 	itemQuery, err := im.DB.Prepare("INSERT INTO customers(nama) VALUES (?)")
 	if err != nil {
 		log.Println("prepare insert customer ", err.Error())
-		return false, errors.New("** Prepare INSERT ke tabel customer ERROR **")
+		return false, errors.New("** Prepare INSERT to customer table ERROR **")
 	}
 	if im.DuplicateCustomer(nama) {
 		log.Println("--- Duplicated information ---")
-		return false, errors.New("nama sudah digunakan")
+		return false, errors.New("name already exists")
 	}
 	res, err := itemQuery.Exec(nama)
 	if err != nil {
 		log.Println("Insert customer ", err.Error())
-		return false, errors.New("** Error saat Insert customer **")
+		return false, errors.New("** Error while Inserting customer **")
 	}
 	affRows, err := res.RowsAffected()
 
 	if err != nil {
-		log.Println("Error setelah insert item ", err.Error())
-		return false, errors.New("error setelah insert")
+		log.Println("Error after inserting item ", err.Error())
+		return false, errors.New("error after inserting")
 	}
 	if affRows <= 0 {
 		log.Println("no record affected")
@@ -171,7 +171,7 @@ func (im *ItemMenu) RegisterCustomer(nama string) (bool, error) {
 func (im *ItemMenu) TampilkanItem() {
 	resultRows, err := im.DB.Query("SELECT * FROM items ")
 	if err != nil {
-		fmt.Println("Ambil Data dari Database Error", err.Error())
+		fmt.Println("Read Data from Database Error", err.Error())
 	}
 	arrItem := []Items{}
 	for resultRows.Next() {
@@ -182,7 +182,7 @@ func (im *ItemMenu) TampilkanItem() {
 	// id := arrItem[0].Nama
 	// namar := arrItem[0].Password
 	fmt.Println("|-----------------------------------------------|")
-	fmt.Println("|  No  |\t Nama\t\t|\tStock   |")
+	fmt.Println("|  No  |\t Name\t\t|\tStock   |")
 	fmt.Println("|-----------------------------------------------|")
 	for i := 0; i < len(arrItem); i++ {
 		if len(arrItem[i].Nama) > 5 {
