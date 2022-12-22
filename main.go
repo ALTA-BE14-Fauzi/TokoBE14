@@ -40,6 +40,7 @@ func main() {
 			fmt.Scanln(&inputNama)
 			fmt.Print("Enter Password : ")
 			fmt.Scanln(&inputPassword)
+			fmt.Println("")
 			res, err := authmenu.Login(inputNama, inputPassword)
 			if err != nil {
 				fmt.Println(err.Error())
