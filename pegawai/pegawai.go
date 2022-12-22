@@ -21,8 +21,8 @@ func MenuPegawai(nama string) {
 		fmt.Println("  1. Add New Item")
 		fmt.Println("  2. Edit Item Name & Stock")
 		fmt.Println("  3. Add New Customer")
-		fmt.Println("  4. Create Transaction")
-		fmt.Println("  5. Show Transaction")
+		fmt.Println("  4. Add New Transaction")
+		fmt.Println("  5. Show Transactions")
 		fmt.Println("  0. Logout")
 		fmt.Print("Enter your option: ")
 		fmt.Scanln(&inputLogin)
@@ -31,18 +31,23 @@ func MenuPegawai(nama string) {
 		if inputLogin == "1" {
 			fmt.Println("=========== Add New Item ===========")
 			var newItem items.Items
-			fmt.Print("Enter item's name : ")
+			fmt.Print("Enter item name : ")
 			fmt.Scanln(&newItem.Nama)
-			fmt.Print("Enter item's stock : ")
+			fmt.Print("Enter item stock : ")
 			fmt.Scanln(&newItem.Stock)
-			res, err := itemMenu.TambahItem(newItem)
-			if err != nil {
-				fmt.Println(err.Error())
-			}
-			if res {
-				fmt.Println("*** Product successfully added ***")
+			itemBaru := newItem.Nama
+			if itemBaru != "" {
+				res, err := itemMenu.TambahItem(newItem)
+				if err != nil {
+					fmt.Println(err.Error())
+				}
+				if res {
+					fmt.Println("*** Product successfully added ***")
+				} else {
+					fmt.Println("Failed to add product")
+				}
 			} else {
-				fmt.Println("Failed to add product")
+				fmt.Println("Item Name is not allowed empty, Failed to add product")
 			}
 			// ==============================================================================================
 		} else if inputLogin == "2" {
@@ -60,7 +65,7 @@ func MenuPegawai(nama string) {
 					var namaLama, namaBaru string
 					fmt.Print("Input item name that you want to change : ")
 					fmt.Scanln(&namaLama)
-					fmt.Print("Change item's name ", namaLama, " to : ")
+					fmt.Print("Change old name ", namaLama, " to : ")
 					fmt.Scanln(&namaBaru)
 					res, err := itemMenu.UbahNamaItem(namaLama, namaBaru)
 					if err != nil {
@@ -74,9 +79,9 @@ func MenuPegawai(nama string) {
 
 				} else if inputEdit == "2" {
 					var editStock items.Items
-					fmt.Print("Input item's name : ")
+					fmt.Print("Input item name : ")
 					fmt.Scanln(&editStock.Nama)
-					fmt.Print("Update item's stock : ")
+					fmt.Print("Update item stock : ")
 					fmt.Scanln(&editStock.Stock)
 					res, err := itemMenu.UpdateStock(editStock)
 					if err != nil {
@@ -95,43 +100,39 @@ func MenuPegawai(nama string) {
 			var namaCus string
 			fmt.Print("Enter customer name : ")
 			fmt.Scanln(&namaCus)
-			res, err := itemMenu.RegisterCustomer(namaCus)
-			if err != nil {
-				fmt.Println(err.Error())
-			}
-			if res {
-				fmt.Println("*** Successfully added customer ***")
+			if namaCus != "" {
+				res, err := itemMenu.RegisterCustomer(namaCus)
+				if err != nil {
+					fmt.Println(err.Error())
+				}
+				if res {
+					fmt.Println("*** Successfully added customer ***")
+				} else {
+					fmt.Println("Failed to add customer")
+				}
 			} else {
-				fmt.Println("Failed to add customer")
+				fmt.Println("Customer Name is not allowed empty, Failed to add customer")
 			}
 			// ==============================================================================================
 		} else if inputLogin == "4" {
-			fmt.Println("============ Create Transaction ============")
+			fmt.Println("============== Create Transaction ==============")
 			itemMenu.TampilkanItem()
 			var namaBarang, namaPembeli string
 			fmt.Print("Enter customer's name : ")
 			fmt.Scanln(&namaPembeli)
-			res, err := transMenu.BuatTransaksi(nama, namaPembeli)
-			if err != nil {
-				fmt.Println(err.Error())
-			}
-			if res {
-				fmt.Print("Transaction has been made, please input item : ")
+			if namaPembeli != "" && namaBarang != "0" {
+				res, err := transMenu.BuatTransaksi(nama, namaPembeli)
+				if err != nil {
+					fmt.Println(err.Error())
+				}
+				if res {
+					fmt.Println("Transaction with customer name ", namaPembeli, " success create ")
 
-				fmt.Scan(&namaBarang)
-				if namaBarang != "0" {
-					res, err := transMenu.BuatTransaksiItems(namaBarang)
-					if err != nil {
-						fmt.Println(err.Error())
-					}
-					if res {
-						fmt.Println(" OK ✓")
-					} else {
-						fmt.Println("Failed to create transaction")
-					}
+				} else {
+					fmt.Println("Failed to create transaction")
 				}
 				for namaBarang != "0" {
-					fmt.Print("Input the next item (Input 0 to complete) : ")
+					fmt.Print("Input item Name (0 to cancel) : ")
 					fmt.Scan(&namaBarang)
 					if namaBarang != "0" {
 						res, err := transMenu.BuatTransaksiItems(namaBarang)
@@ -144,19 +145,30 @@ func MenuPegawai(nama string) {
 							fmt.Println("Failed to input item")
 						}
 					}
+					// ----------------CEK APAKAH ADA TRANSAKSI TAPI TIDAK ADA BARANG YANG DIBELI-----------
+					if namaBarang == "0" {
+						res, err := transMenu.CekTransaksiItems()
+						if err != nil {
+							fmt.Println(err.Error())
+						}
+						if !res {
+							fmt.Println("** Transaksi Dibatalkan **")
+							transMenu.BatalDanHapusTransaksi()
+							namaBarang = "0"
+						}
+
+					}
+
 				}
-
+				inputLogin = "A"
 			} else {
-				fmt.Println("Failed to create transaction")
+				fmt.Println("Customer Name must be fill, Failed to create transaction")
 			}
-			//cek ID transaksi sudah input barang atau belum
-			//
 
-			// ==============================================================================================
 		} else if inputLogin == "5" {
 			transMenu.TampilTransaksiModif()
 			var inputIDTrans int
-			fmt.Print("0. Cancel or Exit View")
+			fmt.Println("0. Cancel or Exit View")
 			fmt.Print("Choose transaction ID to see more: ")
 			fmt.Scanln(&inputIDTrans)
 			if inputIDTrans != 0 {
@@ -173,15 +185,12 @@ func MenuPegawai(nama string) {
 				} else {
 					fmt.Println("Failed to display transaction")
 				}
+
 			}
 
 		}
-		inputLogin = "A"
 		if inputLogin > "5" && inputLogin != "0" && inputLogin != "A" {
 			fmt.Println("*** Incorrect input. Please input accordingly***")
-		}
-		if inputLogin == "A" {
-			fmt.Println("")
 		}
 	}
 

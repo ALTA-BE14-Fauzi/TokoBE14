@@ -137,7 +137,7 @@ func (tm *TransMenu) HapusTransaksi(hapusTransaksi int) (bool, error) {
 }
 
 func (tm *TransMenu) TampilTransaksiModif() {
-	resultRows, err := tm.DB.Query("SELECT t.id,u.nama ,c.nama,create_date FROM transaksis t JOIN users u ON u.id = user_id JOIN customers c ON c.id = customer_id;")
+	resultRows, err := tm.DB.Query("SELECT t.id,u.nama ,c.nama,create_date FROM transaksis t JOIN users u ON u.id = user_id JOIN customers c ON c.id = customer_id ORDER BY t.id;")
 	if err != nil {
 		fmt.Println("Ambil Data dari Database Error", err.Error())
 	}
@@ -147,8 +147,6 @@ func (tm *TransMenu) TampilTransaksiModif() {
 		resultRows.Scan(&tmp.ID, &tmp.NamaKasir, &tmp.NamaCustomer, &tmp.CreateDate)
 		arrTrans = append(arrTrans, tmp)
 	}
-	// id := arrTrans[0].Nama
-	// namar := arrTrans[0].Password
 	fmt.Println("|-------------------------------------------------------|")
 	fmt.Println("|                     TABEL TRANSAKSI                   |")
 	fmt.Println("|-------------------------------------------------------|")
@@ -374,7 +372,6 @@ func (tm *TransMenu) BuatTransaksiItems(namaBarang string) (bool, error) {
 			log.Println("no record affected")
 			return false, errors.New("no record")
 		}
-		//------------------------------Buat Transaksi Items-------------------------------
 
 		return true, nil
 
@@ -441,4 +438,79 @@ func (tm *TransMenu) ViewTransaksiItem(id int) {
 
 	}
 	fmt.Println("|-------------------------------------------------------------------------------|")
+}
+
+//================================================Upgrade Cancel==================================================
+
+func (tm *TransMenu) CekTranItems(id int) bool {
+	res := tm.DB.QueryRow("SELECT transaction_id FROM transaksi_items where transaction_id = ?", id)
+	var idExist int
+	err := res.Scan(&idExist)
+	if err != nil {
+
+		return true
+	}
+	return false
+}
+
+func (tm *TransMenu) CekTransaksiItems() (bool, error) {
+	//-----------------------Ambil ID Transaksi-------------------
+	TransRows, err := tm.DB.Query("SELECT id FROM transaksis ")
+	if err != nil {
+		fmt.Println("Ambil Data dari Database Error", err.Error())
+	}
+	arrTrans := []Transaksi{}
+	for TransRows.Next() {
+		tmpStock := Transaksi{}
+		TransRows.Scan(&tmpStock.ID)
+		arrTrans = append(arrTrans, tmpStock)
+	}
+	transID := arrTrans[len(arrTrans)-1].ID
+
+	// ------ CEK APAKAH ADA TRANSAKSI BARANG PADA ID TRANSAKSI TERSEBUT -------
+	if tm.CekTranItems(transID) {
+		return false, errors.New("--Tidak Ada Barang yang dibeli--")
+	}
+	return true, nil
+
+}
+
+// ------------HAPUS TRANSAKSI YANG TELAH DIBUAT KARENA DIBATALKAN-------------
+func (tm *TransMenu) BatalDanHapusTransaksi() (bool, error) {
+	TransRows, err := tm.DB.Query("SELECT id FROM transaksis ")
+	if err != nil {
+		fmt.Println("Ambil Data dari Database Error", err.Error())
+	}
+	arrTrans := []Transaksi{}
+	for TransRows.Next() {
+		tmpStock := Transaksi{}
+		TransRows.Scan(&tmpStock.ID)
+		arrTrans = append(arrTrans, tmpStock)
+	}
+	transID := arrTrans[len(arrTrans)-1].ID
+
+	delQry, err := tm.DB.Prepare("DELETE FROM transaksis WHERE id = ?")
+	if err != nil {
+		log.Println("prepare delete transaksi ", err.Error())
+		return false, errors.New("prepare statement delete transaksi error")
+	}
+	// menjalankan query dengan parameter tertentu
+	res, err := delQry.Exec(transID)
+	if err != nil {
+		log.Println("delete transaksi", err.Error())
+		return false, errors.New("delete transaksi error")
+	}
+	// Cek berapa baris yang terpengaruh query diatas
+	affRows, err := res.RowsAffected()
+
+	if err != nil {
+		log.Println("after delete transaksi ", err.Error())
+		return false, errors.New("error setelah delete")
+	}
+	if affRows <= 0 {
+		log.Println("no record affected")
+		return false, errors.New("no record")
+	}
+	return true, nil
+
 }

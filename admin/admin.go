@@ -36,14 +36,20 @@ func MenuAdmin(nama string) {
 
 			fmt.Print("Enter new employee's password : ")
 			fmt.Scanln(&newUser.Password)
-			res, err := authmenu.Register(newUser)
-			if err != nil {
-				fmt.Println(err.Error())
-			}
-			if res {
-				fmt.Println("Successfully added new employee")
+			namaBaru := newUser.Nama
+			passBaru := newUser.Password
+			if namaBaru != "" && passBaru != "" {
+				res, err := authmenu.Register(newUser)
+				if err != nil {
+					fmt.Println(err.Error())
+				}
+				if res {
+					fmt.Println("Successfully added new employee")
+				} else {
+					fmt.Println("Failed to add new employee")
+				}
 			} else {
-				fmt.Println("Failed to add new employee")
+				fmt.Println("Input Tidak Boleh Ada yang kosong, Failed to add new employee ")
 			}
 		} else if inputLogin == "2" {
 			inputHapus := "A"
