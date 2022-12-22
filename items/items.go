@@ -228,6 +228,8 @@ func (im *ItemMenu) TampilkanItemFull() {
 		resultRows.Scan(&tmp.ID, &tmp.Nama, &tmp.Stock, &tmp.UserNama)
 		arrItem = append(arrItem, tmp)
 	}
+
+	fmt.Println(resultRows)
 	// id := arrItem[0].Nama
 	// namar := arrItem[0].Password
 	fmt.Println("|-----------------------------------------------------------------------|")

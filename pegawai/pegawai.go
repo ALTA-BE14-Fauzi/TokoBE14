@@ -121,49 +121,49 @@ func MenuPegawai(nama string) {
 			var namaBarang, namaPembeli string
 			fmt.Print("Enter customer's name : ")
 			fmt.Scanln(&namaPembeli)
-
-			res, err := transMenu.BuatTransaksi(nama, namaPembeli)
-			if err != nil {
-				fmt.Println(err.Error())
-			}
-			if res {
-				fmt.Println("Transaction with customer name ", namaPembeli, " successfully created ")
-				fmt.Println("Press 0 to cancel transaction")
-				for namaBarang != "0" {
-					fmt.Print("Input item name: ")
-
-					fmt.Scan(&namaBarang)
-					if namaBarang != "0" {
-						res, err := transMenu.BuatTransaksiItems(namaBarang)
-						if err != nil {
-							fmt.Println(err.Error())
-						}
-						if res {
-							fmt.Println(" OK ✓ | Press 0 to finish transaction/exit")
-						} else {
-							fmt.Println("Failed to input item")
-						}
-					}
-
-				}
-			} else {
-				fmt.Println("Failed to create transaction")
-			}
-			// ----------------CEK APAKAH ADA TRANSAKSI TAPI TIDAK ADA BARANG YANG DIBELI-----------
-			if namaBarang == "0" {
-				res, err := transMenu.CekTransaksiItems()
+			if namaPembeli != "" {
+				res, err := transMenu.BuatTransaksi(nama, namaPembeli)
 				if err != nil {
 					fmt.Println(err.Error())
 				}
-				if !res {
-					fmt.Println("** Transaction cancelled **")
-					transMenu.BatalDanHapusTransaksi()
-					namaBarang = "0"
+				if res {
+					fmt.Println("Transaction with customer name ", namaPembeli, " successfully created ")
+					fmt.Println("Press 0 to cancel transaction")
+					for namaBarang != "0" {
+						fmt.Print("Input item name: ")
+
+						fmt.Scan(&namaBarang)
+						if namaBarang != "0" {
+							res, err := transMenu.BuatTransaksiItems(namaBarang)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
+							if res {
+								fmt.Println(" OK ✓ | Press 0 to finish transaction/exit")
+							} else {
+								fmt.Println("Failed to input item")
+							}
+						}
+
+					}
+				} else {
+					fmt.Println("Failed to create transaction")
 				}
+				// ----------------CEK APAKAH ADA TRANSAKSI TAPI TIDAK ADA BARANG YANG DIBELI-----------
+				if namaBarang == "0" {
+					res, err := transMenu.CekTransaksiItems()
+					if err != nil {
+						fmt.Println(err.Error())
+					}
+					if !res {
+						fmt.Println("** Transaction cancelled **")
+						transMenu.BatalDanHapusTransaksi()
+						namaBarang = "0"
+					}
 
+				}
+				inputLogin = "A"
 			}
-			inputLogin = "A"
-
 		} else if inputLogin == "5" {
 			transMenu.TampilTransaksiModif()
 			var inputIDTrans int
