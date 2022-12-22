@@ -156,7 +156,7 @@ func MenuPegawai(nama string) {
 		} else if inputLogin == "5" {
 			transMenu.TampilTransaksiModif()
 			var inputIDTrans int
-			fmt.Print("Choose transaction ID to see more: ")
+			fmt.Print("Select transaction ID to see more: ")
 			fmt.Scanln(&inputIDTrans)
 			res, err := transMenu.TranksaksiItem(inputIDTrans)
 			if err != nil {
