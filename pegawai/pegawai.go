@@ -145,7 +145,7 @@ func MenuPegawai(nama string) {
 						}
 					}
 				}
-				inputLogin = "A"
+
 			} else {
 				fmt.Println("Failed to create transaction")
 			}
@@ -156,23 +156,27 @@ func MenuPegawai(nama string) {
 		} else if inputLogin == "5" {
 			transMenu.TampilTransaksiModif()
 			var inputIDTrans int
-			fmt.Print("Select transaction ID to see more: ")
+			fmt.Print("0. Cancel or Exit View")
+			fmt.Print("Choose transaction ID to see more: ")
 			fmt.Scanln(&inputIDTrans)
-			res, err := transMenu.TranksaksiItem(inputIDTrans)
-			if err != nil {
-				fmt.Println(err.Error())
-			}
-			if res {
-				fmt.Println("Here is the transaction table based on the transaction ID", inputIDTrans)
-				transMenu.ViewTransaksiItem(inputIDTrans)
-				var ExitView int
-				fmt.Print("Press enter to exit ")
-				fmt.Scanln(&ExitView)
-			} else {
-				fmt.Println("Failed to display transaction")
+			if inputIDTrans != 0 {
+				res, err := transMenu.TranksaksiItem(inputIDTrans)
+				if err != nil {
+					fmt.Println(err.Error())
+				}
+				if res {
+					fmt.Println("Here is the transaction table based on the transaction ID", inputIDTrans)
+					transMenu.ViewTransaksiItem(inputIDTrans)
+					var ExitView int
+					fmt.Print("Press enter to exit ")
+					fmt.Scanln(&ExitView)
+				} else {
+					fmt.Println("Failed to display transaction")
+				}
 			}
 
 		}
+		inputLogin = "A"
 		if inputLogin > "5" && inputLogin != "0" && inputLogin != "A" {
 			fmt.Println("*** Incorrect input. Please input accordingly***")
 		}
