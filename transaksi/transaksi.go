@@ -298,7 +298,7 @@ func (tm *TransMenu) BuatTransaksi(nama string, namaCustomer string) (bool, erro
 
 func (tm *TransMenu) BuatTransaksiItems(namaBarang string) (bool, error) {
 	//-----------------------Ambil ID Transaksi-------------------
-	TransRows, err := tm.DB.Query("SELECT id FROM transaksis ")
+	TransRows, err := tm.DB.Query("SELECT id FROM transaksis order by transaksis.id")
 	if err != nil {
 		fmt.Println("Ambil Data dari Database Error", err.Error())
 	}
