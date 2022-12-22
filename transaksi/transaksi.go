@@ -386,6 +386,25 @@ type ViewTransaksiItemStruct struct {
 	CreateDate   string
 }
 
+func (tm *TransMenu) CekTransaksiID(id int) bool {
+	res := tm.DB.QueryRow("SELECT id FROM transaksis where id = ?", id)
+	var idExist int
+	err := res.Scan(&idExist)
+	if err != nil { // err hanya bernilai nil & bukan nil
+		log.Println("ID Transaksi tidak ada", err.Error())
+		return true
+	}
+	return false
+}
+
+func (tm *TransMenu) TranksaksiItem(id int) (bool, error) {
+	if tm.CekTransaksiID(id) {
+		log.Println("--- ID Transaksi tidak ada  ---")
+		return false, errors.New("ID kosong")
+	}
+	return true, nil
+}
+
 func (tm *TransMenu) ViewTransaksiItem(id int) {
 	resultRows, err := tm.DB.Query("SELECT t.id,u.nama, c.nama,i.nama,COUNT(*),t.create_date FROM transaksi_items JOIN transaksis t ON t.id = transaction_id JOIN customers c ON c.id = customer_id JOIN items i ON i.id = item_id 	jOIN users u ON u.id = t.user_id WHERE t.id = ? group by t.id,c.nama,i.nama,t.create_date having COUNT(*) >= 1;", id)
 	if err != nil {
