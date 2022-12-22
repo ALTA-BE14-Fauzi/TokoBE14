@@ -154,10 +154,20 @@ func MenuPegawai(nama string) {
 			var inputIDTrans int
 			fmt.Print("Pilih ID Transaksi Untuk Lihat Detail : ")
 			fmt.Scanln(&inputIDTrans)
-			transMenu.ViewTransaksiItem(inputIDTrans)
-			var ExitView int
-			fmt.Print("Tekan Enter untuk exit ")
-			fmt.Scanln(&ExitView)
+			res, err := transMenu.TranksaksiItem(inputIDTrans)
+			if err != nil {
+				fmt.Println(err.Error())
+			}
+			if res {
+				fmt.Println("Berikut adalah tabel transaksi item berdasarkan ID Transaksi", inputIDTrans)
+				transMenu.ViewTransaksiItem(inputIDTrans)
+				var ExitView int
+				fmt.Print("Tekan Enter untuk exit ")
+				fmt.Scanln(&ExitView)
+			} else {
+				fmt.Println("Gagal Menampilkan Transaksi")
+			}
+
 		}
 		if inputLogin > "5" && inputLogin != "0" && inputLogin != "A" {
 			fmt.Println("*** Input yang anda masukan tidak cocok.***")
