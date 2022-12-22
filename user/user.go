@@ -26,21 +26,21 @@ type AuthMenu struct {
 func (am *AuthMenu) Login(nama string, password string) (User, error) {
 	userQuery, err := am.DB.Prepare("SELECT role FROM users WHERE nama=? AND password=?")
 	if err != nil {
-		log.Println("Ambil Data dengan fungsi Prepare Error", err.Error())
-		return User{}, errors.New("SELECT prepare statment Error")
+		log.Println("Read Data with Prepare function Error", err.Error())
+		return User{}, errors.New("SELECT prepare statement Error")
 	}
 	row := userQuery.QueryRow(nama, password)
 	if row.Err() != nil {
 
-		log.Println("User Query data tidak ditemukan", row.Err().Error())
-		return User{}, errors.New("Login Gagal, Nama dan Password tidak terdaftar")
+		log.Println("User Query data not found", row.Err().Error())
+		return User{}, errors.New("Login Failed, Name and/or Password not found")
 	}
 	dataRes := User{}
 	err = row.Scan((&dataRes.Role)) // <-- Data Yang akan menjadi Return Value
 
 	if err != nil {
-		log.Println("Data Tidak Ditemukan", err.Error())
-		return User{}, errors.New("** Nama dan Password Salah , Silahkan Coba kembali **")
+		log.Println("Data not found", err.Error())
+		return User{}, errors.New("** Wrong Name and/or Password, Please try again **")
 	}
 	dataRes.Nama = nama
 	return dataRes, nil
@@ -52,7 +52,7 @@ func (am *AuthMenu) Duplicate(name string) bool {
 	var idExist int
 	err := res.Scan(&idExist)
 	if err != nil { // err hanya bernilai nil & bukan nil
-		log.Println("Akun Baru Berhasil Dibuat", err.Error())
+		log.Println("New account successfully created", err.Error())
 		return false
 	}
 	return true
@@ -66,7 +66,7 @@ func (am *AuthMenu) Register(newUser User) (bool, error) {
 	}
 	if am.Duplicate(newUser.Nama) {
 		log.Println("--- Duplicated information ---")
-		return false, errors.New("nama sudah digunakan")
+		return false, errors.New("name already exists")
 	}
 
 	// menjalankan query dengan parameter tertentu
@@ -80,7 +80,7 @@ func (am *AuthMenu) Register(newUser User) (bool, error) {
 
 	if err != nil {
 		log.Println("after insert user ", err.Error())
-		return false, errors.New("error setelah insert")
+		return false, errors.New("error after insert")
 	}
 	if affRows <= 0 {
 		log.Println("no record affected")
@@ -92,7 +92,7 @@ func (am *AuthMenu) Register(newUser User) (bool, error) {
 func (am *AuthMenu) TampilItem() {
 	resultRows, err := am.DB.Query("SELECT * FROM items")
 	if err != nil {
-		fmt.Println("Ambil Data dari Database Error", err.Error())
+		fmt.Println("Error Reading Data from Database", err.Error())
 	}
 	arrItem := []Items{}
 	for resultRows.Next() {
@@ -101,7 +101,7 @@ func (am *AuthMenu) TampilItem() {
 		arrItem = append(arrItem, tmp)
 	}
 	fmt.Println("|-----------------------------------------------|")
-	fmt.Println("|  ID  |\t Nama\t\t|\tStock   |")
+	fmt.Println("|  ID  |\t Name\t\t|\tStock   |")
 	fmt.Println("|-----------------------------------------------|")
 	for i := 0; i < len(arrItem); i++ {
 		if len(arrItem[i].Nama) > 5 {
@@ -117,7 +117,7 @@ func (am *AuthMenu) TampilItem() {
 func (am *AuthMenu) TampilPegawai() {
 	resultRows, err := am.DB.Query("SELECT * FROM users")
 	if err != nil {
-		fmt.Println("Ambil Data dari Database Error", err.Error())
+		fmt.Println("Error Reading Data from Database", err.Error())
 	}
 	arrUser := []User{}
 	for resultRows.Next() {
@@ -126,9 +126,9 @@ func (am *AuthMenu) TampilPegawai() {
 		arrUser = append(arrUser, tmp)
 	}
 	fmt.Println("|-------------------------------|")
-	fmt.Println("|         TABEL PEGAWAI       	|")
+	fmt.Println("|         EMPLOYEE TABLE       	|")
 	fmt.Println("|-------------------------------|")
-	fmt.Println("|  ID\t|      Nama Pegawai\t|")
+	fmt.Println("|  ID\t|      Employee Name\t|")
 	fmt.Println("|-------------------------------|")
 	for i := 0; i < len(arrUser); i++ {
 		if arrUser[i].Role > 1 {
@@ -150,7 +150,7 @@ func (am *AuthMenu) CekUser(userID int) bool {
 	var idExist int
 	err := res.Scan(&idExist)
 	if err != nil { // err hanya bernilai nil & bukan nil
-		log.Println("ID Salah, Harap Masukan ID dengan Benar", err.Error())
+		log.Println("Wrong ID, Please input the correct ID", err.Error())
 		return true
 	}
 	return false
@@ -159,13 +159,13 @@ func (am *AuthMenu) CekUser(userID int) bool {
 func (am *AuthMenu) HapusPegawai(hapusPegawai int) (bool, error) {
 	//--------------------------------Cek ID -----------------------------------
 	if am.CekUser(hapusPegawai) {
-		log.Println("ID tidak terdaftar")
-		return false, errors.New("tolong input id dengan benar")
+		log.Println("ID not registered")
+		return false, errors.New("Please input the correct ID")
 	}
 	//--------------------------------Cek Role----------------------------------
 	resultRows, err := am.DB.Query("SELECT role FROM users WHERE id = ?", hapusPegawai)
 	if err != nil {
-		fmt.Println("Ambil Data dari Database Error", err.Error())
+		fmt.Println("Error Reading Data from Database", err.Error())
 	}
 	arrUser := []User{}
 	for resultRows.Next() {
@@ -179,21 +179,21 @@ func (am *AuthMenu) HapusPegawai(hapusPegawai int) (bool, error) {
 	if role == 2 {
 		delQry, err := am.DB.Prepare("DELETE FROM users WHERE id = ?")
 		if err != nil {
-			log.Println("prepare delete pegawai ", err.Error())
-			return false, errors.New("prepare statement delete pegawai error")
+			log.Println("prepare delete employee ", err.Error())
+			return false, errors.New("prepare statement delete employee error")
 		}
 		// menjalankan query dengan parameter tertentu
 		res, err := delQry.Exec(hapusPegawai)
 		if err != nil {
-			log.Println("delete pegawai", err.Error())
-			return false, errors.New("delete pegawai error")
+			log.Println("delete employee", err.Error())
+			return false, errors.New("delete employee error")
 		}
 		// Cek berapa baris yang terpengaruh query diatas
 		affRows, err := res.RowsAffected()
 
 		if err != nil {
-			log.Println("after delete pegawai ", err.Error())
-			return false, errors.New("error setelah delete")
+			log.Println("after delete employee ", err.Error())
+			return false, errors.New("error after delete")
 		}
 		if affRows <= 0 {
 			log.Println("no record affected")
@@ -201,7 +201,7 @@ func (am *AuthMenu) HapusPegawai(hapusPegawai int) (bool, error) {
 		}
 		return true, nil
 	} else {
-		return false, errors.New("*** silahkan input ID dengan benar sesuai tabel ***")
+		return false, errors.New("*** Please input ID according to the table ***")
 	}
 
 }
@@ -226,7 +226,7 @@ func (am *AuthMenu) HapusItem(hapusItem Items) (bool, error) {
 
 	if err != nil {
 		log.Println("after delete item ", err.Error())
-		return false, errors.New("error setelah delete")
+		return false, errors.New("error after delete")
 	}
 	if affRows <= 0 {
 		log.Println("no record affected")
