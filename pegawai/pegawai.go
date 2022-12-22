@@ -48,7 +48,7 @@ func MenuPegawai(nama string) {
 					fmt.Println("Failed to add product")
 				}
 			} else {
-				fmt.Println("Item Name is not allowed empty, Failed to add product")
+				fmt.Println("Item Name can't be empty, failed to add product")
 			}
 			// ==============================================================================================
 		} else if inputLogin == "2" {
@@ -112,7 +112,7 @@ func MenuPegawai(nama string) {
 					fmt.Println("Failed to add customer")
 				}
 			} else {
-				fmt.Println("Customer Name is not allowed empty, Failed to add customer")
+				fmt.Println("Customer name can't be empty, failed to add customer")
 			}
 			// ==============================================================================================
 		} else if inputLogin == "4" {
