@@ -298,7 +298,7 @@ func (tm *TransMenu) BuatTransaksi(nama string, namaCustomer string) (bool, erro
 
 func (tm *TransMenu) BuatTransaksiItems(namaBarang string) (bool, error) {
 	//-----------------------Ambil ID Transaksi-------------------
-	TransRows, err := tm.DB.Query("SELECT id FROM transaksis order by transaksis.id")
+	TransRows, err := tm.DB.Query("SELECT t.id FROM transaksis t order by t.id asc;")
 	if err != nil {
 		fmt.Println("Ambil Data dari Database Error", err.Error())
 	}
@@ -309,6 +309,7 @@ func (tm *TransMenu) BuatTransaksiItems(namaBarang string) (bool, error) {
 		arrTrans = append(arrTrans, tmpStock)
 	}
 	transID := arrTrans[len(arrTrans)-1].ID
+
 	//------------------------Cek Barang-----------------------
 	if tm.CekBarang(namaBarang) {
 		log.Println("--- Empty Item ---")
@@ -330,6 +331,7 @@ func (tm *TransMenu) BuatTransaksiItems(namaBarang string) (bool, error) {
 	idBarang := arrStockItem[0].ID
 	if StockBarang > 0 {
 		//--------------------------Input Data Ke Transaksi Items-----------------------------
+
 		itemQuery, err := tm.DB.Prepare("INSERT INTO transaksi_items(transaction_id,item_id) VALUES (?,?)")
 		if err != nil {
 			log.Println("prepare insert Transaksi ", err.Error())
