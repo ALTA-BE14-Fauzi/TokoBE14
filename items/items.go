@@ -46,6 +46,7 @@ func (im *ItemMenu) TambahItem(nama string, newItem Items) (bool, error) {
 		resultRows.Scan(&tmp.ID)
 		arrUser = append(arrUser, tmp)
 	}
+	fmt.Println(arrUser)
 	userID := arrUser[0].ID
 
 	itemQuery, err := im.DB.Prepare("INSERT INTO items(nama,stock,user_id) VALUES (?,?,?)")
@@ -228,8 +229,7 @@ func (im *ItemMenu) TampilkanItemFull() {
 		resultRows.Scan(&tmp.ID, &tmp.Nama, &tmp.Stock, &tmp.UserNama)
 		arrItem = append(arrItem, tmp)
 	}
-	// id := arrItem[0].Nama
-	// namar := arrItem[0].Password
+
 	fmt.Println("|-----------------------------------------------------------------------|")
 	fmt.Println("|  No  |\t Name\t\t|\tStock   | Diinput Oleh\t\t|")
 	fmt.Println("|-----------------------------------------------------------------------|")
