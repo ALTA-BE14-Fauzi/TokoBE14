@@ -100,10 +100,18 @@ func (am *AuthMenu) TampilItem() {
 		resultRows.Scan(&tmp.ID, &tmp.Nama, &tmp.Stock)
 		arrItem = append(arrItem, tmp)
 	}
-
+	fmt.Println("|-----------------------------------------------|")
+	fmt.Println("|  No  |\t Nama\t\t|\tStock   |")
+	fmt.Println("|-----------------------------------------------|")
 	for i := 0; i < len(arrItem); i++ {
-		fmt.Println(arrItem[i].ID, arrItem[i].Nama, arrItem[i].Stock)
+		if len(arrItem[i].Nama) > 5 {
+			fmt.Println("|  ", arrItem[i].ID, " |\t", arrItem[i].Nama, "\t|\t", arrItem[i].Stock, "\t|")
+		} else {
+			fmt.Println("|  ", arrItem[i].ID, " |\t", arrItem[i].Nama, "\t\t|\t", arrItem[i].Stock, "\t|")
+
+		}
 	}
+	fmt.Println("|-----------------------------------------------|")
 }
 
 func (am *AuthMenu) TampilPegawai() {
@@ -117,12 +125,23 @@ func (am *AuthMenu) TampilPegawai() {
 		resultRows.Scan(&tmp.ID, &tmp.Nama, &tmp.Password, &tmp.Role)
 		arrUser = append(arrUser, tmp)
 	}
-
+	fmt.Println("|-------------------------------|")
+	fmt.Println("|         TABEL PEGAWAI       	|")
+	fmt.Println("|-------------------------------|")
+	fmt.Println("|  ID\t|      Nama Pegawai\t|")
+	fmt.Println("|-------------------------------|")
 	for i := 0; i < len(arrUser); i++ {
 		if arrUser[i].Role > 1 {
-			fmt.Println(arrUser[i].ID, arrUser[i].Nama)
+			if len(arrUser[i].Nama) < 9 {
+				fmt.Println("| ", arrUser[i].ID, "\t| ", arrUser[i].Nama, "\t\t| ")
+			} else {
+				fmt.Println("| ", arrUser[i].ID, "\t| ", arrUser[i].Nama, "\t| ")
+			}
+
 		}
+
 	}
+	fmt.Println("|-------------------------------|")
 }
 
 // -------------------------------------------------------------------------------------------------
