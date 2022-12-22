@@ -74,14 +74,14 @@ func MenuPegawai(nama string) {
 					var editStock items.Items
 					fmt.Print("Masukan Nama Barang : ")
 					fmt.Scanln(&editStock.Nama)
-					fmt.Print("Tambahkan Jumlah Stock Barang : ")
+					fmt.Print("Masukan Jumlah Stock Barang Terbaru : ")
 					fmt.Scanln(&editStock.Stock)
 					res, err := itemMenu.UpdateStock(editStock)
 					if err != nil {
 						fmt.Println(err.Error())
 					}
 					if res {
-						fmt.Println("*** Sukses Menambah Stock Nama Barang ***")
+						fmt.Println("*** Sukses Mengupdate Stock Nama Barang ***")
 					} else {
 						fmt.Println("Gagal Menambah Stock Nama Barang")
 					}
