@@ -16,54 +16,55 @@ func MenuAdmin(nama string) {
 
 	inputLogin := "A"
 	for inputLogin != "0" {
-		fmt.Println("=================== ADMIN =====================") // MENU ADMIN-------------
-		fmt.Println("Selamat Datang ", strings.ToUpper(nama))
-		fmt.Println("1. Tambahkan Pegawai Baru")
-		fmt.Println("2. Hapus Data")
+		fmt.Println("=================== Admin Menu =====================") // MENU ADMIN-------------
+		fmt.Println("Welcome ", strings.ToUpper(nama))
+		fmt.Println("1. Add New Employee")
+		fmt.Println("2. Delete Data")
 		fmt.Println("0. Logout")
-		fmt.Print("Masukkan pilihan : ")
+		fmt.Print("Enter your option : ")
 		fmt.Scanln(&inputLogin)
+		fmt.Println("")
 		if inputLogin == "1" {
-			fmt.Println("========== Tambahkan Pegawai ==========")
+			fmt.Println("========== Add New Employee ==========")
 			var newUser user.User
-			fmt.Print("Masukkan nama : ")
+			fmt.Print("Enter employee's name : ")
 			fmt.Scanln(&newUser.Nama)
 			// reader := bufio.NewReader(os.Stdin)
 			// text, _ := reader.ReadString('\n')
 			// text = strings.TrimSuffix(text, "\n")
 			// newUser.Nama = text
 
-			fmt.Print("Masukkan password : ")
+			fmt.Print("Enter new employee's password : ")
 			fmt.Scanln(&newUser.Password)
 			res, err := authmenu.Register(newUser)
 			if err != nil {
 				fmt.Println(err.Error())
 			}
 			if res {
-				fmt.Println("Sukses mendaftarkan Pegawai")
+				fmt.Println("Successfully added new employee")
 			} else {
-				fmt.Println("Gagal mendaftarkann Pegawai")
+				fmt.Println("Failed to add new employee")
 			}
 		} else if inputLogin == "2" {
 			inputHapus := "A"
 			for inputHapus != "0" {
 
-				fmt.Println("========== Hapus ==========")
-				fmt.Println("1. Hapus Pegawai")
-				fmt.Println("2. Hapus Items")
-				fmt.Println("3. Hapus Transaksi")
-				fmt.Println("4. Hapus Customers")
-				fmt.Println("0. Batal")
-				fmt.Print("Masukan Pilihan : ")
+				fmt.Println("========== Delete Menu ==========")
+				fmt.Println("1. Delete Employee")
+				fmt.Println("2. Delete Item")
+				fmt.Println("3. Delete Transaction")
+				fmt.Println("4. Delete Customer")
+				fmt.Println("0. Cancel")
+				fmt.Print("Enter your option : ")
 				fmt.Scanln(&inputHapus)
 				fmt.Println(inputHapus)
 				if inputHapus == "1" {
-					fmt.Println("============== Hapus Pegawai ==============")
+					fmt.Println("============== Delete Employee ==============")
 					var HapusPegawai int
-					fmt.Println("List Pegawai Toko :")
+					fmt.Println("List Store Employee :")
 					authmenu.TampilPegawai()
-					fmt.Println("0. Batal")
-					fmt.Println("Pilih Pegawai yang akan dihapus (0-9) : ")
+					fmt.Println("0. Cancel")
+					fmt.Println("Choose an employee you'd like to delete: ")
 					fmt.Scanln(&HapusPegawai)
 
 					if HapusPegawai != 0 {
@@ -72,19 +73,19 @@ func MenuAdmin(nama string) {
 							fmt.Println(err.Error())
 						}
 						if res {
-							fmt.Println("Sukses menghapus pegawai")
+							fmt.Println("Successfully deleted an employee")
 						} else {
-							fmt.Println("Gagal menghapus pegawai")
+							fmt.Println("Failed to delete an employee")
 						}
 					}
 				}
 				if inputHapus == "2" {
-					fmt.Println("============== Hapus Items ==============")
+					fmt.Println("============== Delete Item ==============")
 					var hapusItem user.Items
-					fmt.Println("List Items :")
+					fmt.Println("Item List :")
 					authmenu.TampilItem()
-					fmt.Println("0. Batal")
-					fmt.Print("Pilih ID Item yang akan dihapus (0-9) : ")
+					fmt.Println("0. Cancel")
+					fmt.Print("Choose Item ID you'd like to delete : ")
 					fmt.Scanln(&hapusItem.ID)
 
 					if hapusItem.ID != 0 {
@@ -93,20 +94,20 @@ func MenuAdmin(nama string) {
 							fmt.Println(err.Error())
 						}
 						if res {
-							fmt.Println("Sukses menghapus item")
+							fmt.Println("Successfully deleted an item")
 						} else {
-							fmt.Println("Gagal menghapus item")
+							fmt.Println("Failed to delete an item")
 						}
 					}
 
 				}
 				if inputHapus == "3" {
-					fmt.Println("============== Hapus Transaksi ==============")
+					fmt.Println("============== Delete Transaction ==============")
 					var hapusTransaksi int
-					fmt.Println("List Transaksi :")
+					fmt.Println("Transaction List :")
 					transMenu.TampilHapusTransaksi()
-					fmt.Println("0. Batal")
-					fmt.Print("Pilih Transaksi yang akan dihapus (0-9) : ")
+					fmt.Println("0. Cancel")
+					fmt.Print("Choose a transaction you'd like to remove (0-9) : ")
 					fmt.Scanln(&hapusTransaksi)
 
 					if hapusTransaksi != 0 {
@@ -115,20 +116,20 @@ func MenuAdmin(nama string) {
 							fmt.Println(err.Error())
 						}
 						if res {
-							fmt.Println("Sukses menghapus transaksi")
+							fmt.Println("Successfully deleted a transaction")
 						} else {
-							fmt.Println("Gagal menghapus transaksi")
+							fmt.Println("Failed to delete a transaction")
 						}
 					}
 				}
 				if inputHapus == "4" {
-					fmt.Println("============== Hapus Customers ==============")
+					fmt.Println("============== Delete Customer ==============")
 					var hapusCust int
-					fmt.Println("List Customers :")
+					fmt.Println("Customers list :")
 					transMenu.TampilCustomer()
-					fmt.Println("0. Batal")
+					fmt.Println("0. Cancel")
 
-					fmt.Print("Pilih Customers yang akan dihapus (0-9) : ")
+					fmt.Print("Choose a customer you'd like to delete : ")
 					fmt.Scanln(&hapusCust)
 
 					if hapusCust != 0 {
@@ -137,9 +138,9 @@ func MenuAdmin(nama string) {
 							fmt.Println(err.Error())
 						}
 						if res {
-							fmt.Println("Sukses menghapus transaksi")
+							fmt.Println("Successfully deleted a customer")
 						} else {
-							fmt.Println("Gagal menghapus transaksi")
+							fmt.Println("Failed to delete a customer")
 						}
 					}
 				}
@@ -147,7 +148,7 @@ func MenuAdmin(nama string) {
 			}
 
 		} else if inputLogin != "0" && inputLogin != "1" && inputLogin != "2" {
-			fmt.Println("Input yang anda masukan tidak cocok, Silahkan sesuai pilihan menu")
+			fmt.Println("Invalid input, please input according to the menu option")
 		}
 	}
 	// fmt.Println(inputLogin)
