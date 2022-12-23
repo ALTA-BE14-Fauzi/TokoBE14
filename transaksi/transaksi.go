@@ -32,32 +32,6 @@ type TransMenu struct {
 	DB *sql.DB
 }
 
-func (tm *TransMenu) TampilTransaksi() {
-	resultRows, err := tm.DB.Query("SELECT * FROM transaksis ")
-	if err != nil {
-		fmt.Println("Ambil Data dari Database Error", err.Error())
-	}
-	arrTrans := []Transaksi{}
-	for resultRows.Next() {
-		tmp := Transaksi{}
-		resultRows.Scan(&tmp.ID, &tmp.User_ID, &tmp.Customer_ID, &tmp.Create_Date)
-		arrTrans = append(arrTrans, tmp)
-	}
-	// id := arrTrans[0].Nama
-	// namar := arrTrans[0].Password
-	fmt.Println("|------------------------------------------------------|")
-	fmt.Println("|                     TRANSAKSI                        |")
-	fmt.Println("|------------------------------------------------------|")
-	fmt.Println("| No\t| Nama Pegawai\t| Nama Customer\t| Tgl Pembelian |")
-	fmt.Println("|------------------------------------------------------|")
-	for i := 0; i < len(arrTrans); i++ {
-
-		fmt.Println("| ", i+1, "\t| ", arrTrans[i].User_ID, "\t\t| ", arrTrans[i].Customer_ID, "\t\t|", arrTrans[i].Create_Date, "\t|")
-
-	}
-	fmt.Println("|------------------------------------------------------|")
-}
-
 func (tm *TransMenu) TampilHapusTransaksi() {
 	resultRows, err := tm.DB.Query("SELECT t.id, u.nama,c.nama,create_date FROM transaksis t JOIN users u ON u.id = user_id JOIN customers c ON c.id = customer_id;")
 	if err != nil {
@@ -71,17 +45,17 @@ func (tm *TransMenu) TampilHapusTransaksi() {
 	}
 	// id := arrTrans[0].Nama
 	// namar := arrTrans[0].Password
-	fmt.Println("|-------------------------------------------------------|")
-	fmt.Println("|                     TABEL TRANSAKSI                   |")
-	fmt.Println("|-------------------------------------------------------|")
-	fmt.Println("| ID\t| Nama Pegawai\t| Nama Customer\t| Tgl Pembelian |")
-	fmt.Println("|-------------------------------------------------------|")
+	fmt.Println("|----------------------------------------------------------|")
+	fmt.Println("|                     Transactions Table                   |")
+	fmt.Println("|----------------------------------------------------------|")
+	fmt.Println("| ID\t| Employee Name\t| Customer Name\t| Transaction Date |")
+	fmt.Println("|----------------------------------------------------------|")
 	for i := 0; i < len(arrTrans); i++ {
 
-		fmt.Println("| ", arrTrans[i].ID, "\t| ", arrTrans[i].NamaKasir, "\t| ", arrTrans[i].NamaCustomer, "\t|", arrTrans[i].CreateDate, "\t|")
+		fmt.Println("| ", arrTrans[i].ID, "\t| ", arrTrans[i].NamaKasir, "\t| ", arrTrans[i].NamaCustomer, "\t|", arrTrans[i].CreateDate, "\t   |")
 
 	}
-	fmt.Println("|-------------------------------------------------------|")
+	fmt.Println("|----------------------------------------------------------|")
 }
 
 func (tm *TransMenu) HapusTransaksi(hapusTransaksi int) (bool, error) {
@@ -89,7 +63,7 @@ func (tm *TransMenu) HapusTransaksi(hapusTransaksi int) (bool, error) {
 	delQryId, err := tm.DB.Prepare("DELETE FROM transaksi_items WHERE transaction_id = ?")
 	if err != nil {
 		log.Println("prepare delete transaksi ", err.Error())
-		return false, errors.New("prepare statement delete transaksi error")
+		return false, errors.New("prepare statement delete transaction error")
 	}
 	// menjalankan query dengan parameter tertentu
 	resId, err := delQryId.Exec(hapusTransaksi)
@@ -102,7 +76,7 @@ func (tm *TransMenu) HapusTransaksi(hapusTransaksi int) (bool, error) {
 
 	if err != nil {
 		log.Println("after delete transaksi ", err.Error())
-		return false, errors.New("error setelah delete")
+		return false, errors.New("error after deletion")
 	}
 	if affRowsId <= 0 {
 		log.Println("no record affected")
@@ -126,7 +100,7 @@ func (tm *TransMenu) HapusTransaksi(hapusTransaksi int) (bool, error) {
 
 	if err != nil {
 		log.Println("after delete transaksi ", err.Error())
-		return false, errors.New("error setelah delete")
+		return false, errors.New("error after deletion")
 	}
 	if affRows <= 0 {
 		log.Println("no record affected")
@@ -139,7 +113,7 @@ func (tm *TransMenu) HapusTransaksi(hapusTransaksi int) (bool, error) {
 func (tm *TransMenu) TampilTransaksiModif() {
 	resultRows, err := tm.DB.Query("SELECT t.id,u.nama ,c.nama,create_date FROM transaksis t JOIN users u ON u.id = user_id JOIN customers c ON c.id = customer_id ORDER BY t.id;")
 	if err != nil {
-		fmt.Println("Ambil Data dari Database Error", err.Error())
+		fmt.Println("Pick Data From Database has Error", err.Error())
 	}
 	arrTrans := []ModifTransaksi{}
 	for resultRows.Next() {
@@ -147,17 +121,17 @@ func (tm *TransMenu) TampilTransaksiModif() {
 		resultRows.Scan(&tmp.ID, &tmp.NamaKasir, &tmp.NamaCustomer, &tmp.CreateDate)
 		arrTrans = append(arrTrans, tmp)
 	}
-	fmt.Println("|-------------------------------------------------------|")
-	fmt.Println("|                     TABEL TRANSAKSI                   |")
-	fmt.Println("|-------------------------------------------------------|")
-	fmt.Println("|  ID   | Nama Pegawai\t| Nama Customer\t| Tgl Transaksi |")
-	fmt.Println("|-------------------------------------------------------|")
+	fmt.Println("|----------------------------------------------------------|")
+	fmt.Println("|                    Transactions Table                    |")
+	fmt.Println("|----------------------------------------------------------|")
+	fmt.Println("|  ID   | Employee Name\t| Customer Name\t| Transaction Date |")
+	fmt.Println("|----------------------------------------------------------|")
 	for i := 0; i < len(arrTrans); i++ {
 
-		fmt.Println("| ", arrTrans[i].ID, "\t| ", arrTrans[i].NamaKasir, "\t| ", arrTrans[i].NamaCustomer, "\t|", arrTrans[i].CreateDate, "\t|")
+		fmt.Println("| ", arrTrans[i].ID, "\t| ", arrTrans[i].NamaKasir, "\t| ", arrTrans[i].NamaCustomer, "\t|", arrTrans[i].CreateDate, "\t   |")
 
 	}
-	fmt.Println("|-------------------------------------------------------|")
+	fmt.Println("|----------------------------------------------------------|")
 }
 
 func (tm *TransMenu) TampilCustomer() {
@@ -174,15 +148,15 @@ func (tm *TransMenu) TampilCustomer() {
 	// id := arrItem[0].Nama
 	// namar := arrItem[0].Password
 	fmt.Println("|---------------------------------|")
-	fmt.Println("| ID  |\t Nama\t\t\t  |")
+	fmt.Println("|  ID\t|\t Name\t\t  |")
 	fmt.Println("|---------------------------------|")
 	for i := 0; i < len(arrCust); i++ {
 		if len(arrCust[i].Nama) > 12 {
-			fmt.Println("| ", arrCust[i].ID, " |\t", arrCust[i].Nama, "\t  |")
+			fmt.Println("| ", arrCust[i].ID, "\t|\t", arrCust[i].Nama, "\t  |")
 		} else if len(arrCust[i].Nama) < 5 {
-			fmt.Println("| ", arrCust[i].ID, " |\t", arrCust[i].Nama, "\t\t\t  |")
+			fmt.Println("| ", arrCust[i].ID, "\t|\t", arrCust[i].Nama, "\t\t  |")
 		} else {
-			fmt.Println("| ", arrCust[i].ID, " |\t", arrCust[i].Nama, "\t\t  |")
+			fmt.Println("| ", arrCust[i].ID, "\t|\t", arrCust[i].Nama, "\t  |")
 		}
 	}
 	fmt.Println("|---------------------------------|")
@@ -422,24 +396,24 @@ func (tm *TransMenu) ViewTransaksiItem(id int) {
 		arrTrans = append(arrTrans, tmp)
 	}
 	// fmt.Println(arrTrans)
-	fmt.Println("|-------------------------------------------------------------------------------|")
-	fmt.Println("|                               TABEL TRANSAKSI ITEM                            |")
-	fmt.Println("|-------------------------------------------------------------------------------|")
-	fmt.Println("| ID\t| Nama Pegawai\t| Nama Customer\t| Nama Barang\t| Qty\t| Tgl Transaksi |")
-	fmt.Println("|-------------------------------------------------------------------------------|")
+	fmt.Println("|----------------------------------------------------------------------------------|")
+	fmt.Println("|                              Transaction Item Table                              |")
+	fmt.Println("|----------------------------------------------------------------------------------|")
+	fmt.Println("| ID\t| Employee Name\t| Customer Name\t| Item Name\t| Qty\t| Transaction Date |")
+	fmt.Println("|----------------------------------------------------------------------------------|")
 	for i := 0; i < len(arrTrans); i++ {
 		if i > 0 {
 			if arrTrans[i].ID == arrTrans[i-1].ID {
 				tmpStr := ""
-				fmt.Println("| ", tmpStr, "\t| ", tmpStr, "\t\t| ", tmpStr, "\t\t| ", arrTrans[i].NamaBarang, "\t| ", arrTrans[i].Quantity, "\t| ", tmpStr, "\t\t|")
+				fmt.Println("| ", tmpStr, "\t| ", tmpStr, "\t\t| ", tmpStr, "\t\t| ", arrTrans[i].NamaBarang, "\t| ", arrTrans[i].Quantity, "\t| ", tmpStr, "\t\t   |")
 			}
 
 		} else {
-			fmt.Println("| ", arrTrans[i].ID, "\t| ", arrTrans[i].NamaPegawai, "\t| ", arrTrans[i].NamaCustomer, "\t| ", arrTrans[i].NamaBarang, "\t| ", arrTrans[i].Quantity, "\t| ", arrTrans[i].CreateDate, "  |")
+			fmt.Println("| ", arrTrans[i].ID, "\t| ", arrTrans[i].NamaPegawai, "\t| ", arrTrans[i].NamaCustomer, "\t| ", arrTrans[i].NamaBarang, "\t| ", arrTrans[i].Quantity, "\t| ", arrTrans[i].CreateDate, "\t   |")
 		}
 
 	}
-	fmt.Println("|-------------------------------------------------------------------------------|")
+	fmt.Println("|----------------------------------------------------------------------------------|")
 }
 
 //================================================Upgrade Coding==================================================

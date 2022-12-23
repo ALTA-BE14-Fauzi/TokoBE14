@@ -129,14 +129,14 @@ func (am *AuthMenu) TampilPegawai() {
 	fmt.Println("|-------------------------------|")
 	fmt.Println("|         EMPLOYEE TABLE       	|")
 	fmt.Println("|-------------------------------|")
-	fmt.Println("|  ID\t|      Employee Name\t|")
+	fmt.Println("|  ID\t|   Employee Name\t|")
 	fmt.Println("|-------------------------------|")
 	for i := 0; i < len(arrUser); i++ {
 		if arrUser[i].Role > 1 {
 			if len(arrUser[i].Nama) <= 12 {
-				fmt.Println("| ", arrUser[i].ID, "\t| ", arrUser[i].Nama, "\t\t| ")
+				fmt.Println("| ", arrUser[i].ID, "\t|  ", arrUser[i].Nama, "\t\t| ")
 			} else {
-				fmt.Println("| ", arrUser[i].ID, "\t| ", arrUser[i].Nama, "\t| ")
+				fmt.Println("| ", arrUser[i].ID, "\t|  ", arrUser[i].Nama, "\t| ")
 			}
 
 		}
