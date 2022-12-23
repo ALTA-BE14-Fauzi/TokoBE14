@@ -49,7 +49,7 @@ func MenuAdmin(nama string) {
 					fmt.Println("Failed to add new employee")
 				}
 			} else {
-				fmt.Println("Input Tidak Boleh Ada yang kosong, Failed to add new employee ")
+				fmt.Println("Input can't be empty, Failed to add new employee ")
 			}
 		} else if inputLogin == "2" {
 			inputHapus := "A"

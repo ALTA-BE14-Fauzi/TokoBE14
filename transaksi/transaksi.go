@@ -127,9 +127,11 @@ func (tm *TransMenu) TampilTransaksiModif() {
 	fmt.Println("|  ID   | Employee Name\t| Customer Name\t| Transaction Date |")
 	fmt.Println("|----------------------------------------------------------|")
 	for i := 0; i < len(arrTrans); i++ {
-
-		fmt.Println("| ", arrTrans[i].ID, "\t| ", arrTrans[i].NamaKasir, "\t| ", arrTrans[i].NamaCustomer, "\t|", arrTrans[i].CreateDate, "\t   |")
-
+		if len(arrTrans[i].NamaCustomer) <= 3 {
+			fmt.Println("| ", arrTrans[i].ID, "\t| ", arrTrans[i].NamaKasir, "\t| ", arrTrans[i].NamaCustomer, "\t\t|", arrTrans[i].CreateDate, "\t   |")
+		} else {
+			fmt.Println("| ", arrTrans[i].ID, "\t| ", arrTrans[i].NamaKasir, "\t| ", arrTrans[i].NamaCustomer, "\t|", arrTrans[i].CreateDate, "\t   |")
+		}
 	}
 	fmt.Println("|----------------------------------------------------------|")
 }
