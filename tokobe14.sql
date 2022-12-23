@@ -16,7 +16,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE transaksis (
-  id int auto_increment primary key,
+  id int auto_increment PRIMARY KEY ,
   user_id int NOT NULL,
   customer_id int NOT NULL,
   create_date date NOT NULL,
@@ -60,9 +60,12 @@ INSERT INTO items (nama, stock) VALUES ('pop mie', 20);
 
 INSERT INTO customers (nama) VALUES ('bryant');
 
-INSERT INTO transaksis (user_id, item_id, customer_id, create_date) VALUES (2, 1, 1, '2022-12-19');
+INSERT INTO transaksis (user_id, customer_id, create_date) VALUES (2, 1, now());
+INSERT INTO transaksis (user_id, customer_id, create_date) VALUES (2, 2, now());
 
-INSERT INTO transaksi_items (transaction_id, item_id, qty) VALUES (1, 1, 1);
+INSERT INTO transaksi_items (transaction_id, item_id) VALUES (1, 1);
+INSERT INTO transaksi_items (transaction_id, item_id) VALUES (1, 2);
+INSERT INTO transaksi_items (transaction_id, item_id) VALUES (1, 3);
 
 SELECT t.id,u.nama, c.nama,i.nama,COUNT(*), t.create_date 
 FROM transaksi_items t2
