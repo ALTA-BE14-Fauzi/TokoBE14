@@ -218,7 +218,7 @@ type ItemModif struct {
 }
 
 func (im *ItemMenu) TampilkanItemFull() {
-	resultRows, err := im.DB.Query("SELECT i.id , i.nama,i.stock,u.nama FROM items i JOIN users u ON u.id = i.user_id;")
+	resultRows, err := im.DB.Query("SELECT i.id , i.nama,i.stock, u.nama FROM items i LEFT JOIN users u ON u.id = i.user_id;")
 	if err != nil {
 		fmt.Println("Read Data from Database Error", err.Error())
 	}

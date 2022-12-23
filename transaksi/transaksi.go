@@ -111,14 +111,14 @@ func (tm *TransMenu) HapusTransaksi(hapusTransaksi int) (bool, error) {
 }
 
 func (tm *TransMenu) TampilTransaksiModif() {
-	resultRows, err := tm.DB.Query("SELECT t.id,u.nama ,c.nama,create_date FROM transaksis t JOIN users u ON u.id = user_id JOIN customers c ON c.id = customer_id ORDER BY t.id;")
+	resultRows, err := tm.DB.Query("SELECT t.id, c.nama, create_date, u.nama FROM transaksis t LEFT JOIN users u ON u.id = user_id JOIN customers c ON c.id = customer_id;")
 	if err != nil {
 		fmt.Println("Pick Data From Database has Error", err.Error())
 	}
 	arrTrans := []ModifTransaksi{}
 	for resultRows.Next() {
 		tmp := ModifTransaksi{}
-		resultRows.Scan(&tmp.ID, &tmp.NamaKasir, &tmp.NamaCustomer, &tmp.CreateDate)
+		resultRows.Scan(&tmp.ID, &tmp.NamaCustomer, &tmp.CreateDate, &tmp.NamaKasir)
 		arrTrans = append(arrTrans, tmp)
 	}
 	fmt.Println("|----------------------------------------------------------|")
@@ -387,14 +387,14 @@ func (tm *TransMenu) TranksaksiItem(id int) (bool, error) {
 }
 
 func (tm *TransMenu) ViewTransaksiItem(id int) {
-	resultRows, err := tm.DB.Query("SELECT t.id,u.nama, c.nama,i.nama,COUNT(*),t.create_date FROM transaksi_items JOIN transaksis t ON t.id = transaction_id JOIN customers c ON c.id = customer_id JOIN items i ON i.id = item_id 	jOIN users u ON u.id = t.user_id WHERE t.id = ? group by t.id,c.nama,i.nama,t.create_date having COUNT(*) >= 1;", id)
+	resultRows, err := tm.DB.Query("SELECT t.id, c.nama, i.nama, COUNT(*), t.create_date, u.nama FROM transaksi_items t2 LEFT JOIN transaksis t ON t.id = t2.transaction_id LEFT JOIN customers c ON c.id = t.customer_id LEFT JOIN items i ON i.id = t2.item_id left JOIN users u ON u.id = t.user_id WHERE t.id = ? group by t.id, i.nama", id)
 	if err != nil {
 		fmt.Println("Ambil Data dari Database Error", err.Error())
 	}
 	arrTrans := []ViewTransaksiItemStruct{}
 	for resultRows.Next() {
 		tmp := ViewTransaksiItemStruct{}
-		resultRows.Scan(&tmp.ID, &tmp.NamaPegawai, &tmp.NamaCustomer, &tmp.NamaBarang, &tmp.Quantity, &tmp.CreateDate)
+		resultRows.Scan(&tmp.ID, &tmp.NamaCustomer, &tmp.NamaBarang, &tmp.Quantity, &tmp.CreateDate, &tmp.NamaPegawai)
 		arrTrans = append(arrTrans, tmp)
 	}
 	// fmt.Println(arrTrans)
